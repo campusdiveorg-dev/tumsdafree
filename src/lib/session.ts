@@ -1,4 +1,5 @@
-import { SessionOptions } from 'iron-session';
+import { SessionOptions, getIronSession } from 'iron-session';
+import { cookies } from 'next/headers';
 
 export interface SessionData {
   userId?: number;
@@ -19,3 +20,8 @@ export const sessionOptions: SessionOptions = {
     path: '/',
   },
 };
+
+export async function getSession() {
+  const cookieStore = cookies();
+  return getIronSession<SessionData>(cookieStore, sessionOptions);
+}

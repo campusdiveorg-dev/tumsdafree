@@ -10,7 +10,7 @@ import {
   date,
   decimal,
   json,
-  uniqueKey,
+  uniqueIndex,
   foreignKey,
 } from 'drizzle-orm/mysql-core';
 import { sql } from 'drizzle-orm';
@@ -33,7 +33,7 @@ export const users = mysqlTable(
       .notNull(),
   },
   (t) => ({
-    uqUsersEmail: uniqueKey('uq_users_email').on(t.email),
+    uqUsersEmail: uniqueIndex('uq_users_email').on(t.email),
   })
 );
 
@@ -186,7 +186,7 @@ export const payments = mysqlTable(
       .notNull(),
   },
   (t) => ({
-    uqCheckoutRequest: uniqueKey('uq_checkout_request').on(t.checkoutRequestId),
+    uqCheckoutRequest: uniqueIndex('uq_checkout_request').on(t.checkoutRequestId),
     fkPaymentsUser: foreignKey({
       columns: [t.userId],
       foreignColumns: [users.id],
