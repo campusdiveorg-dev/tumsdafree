@@ -1,3 +1,4 @@
+import { getImageUrl } from '@/lib/cloudinaryUrl';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { db } from '@/lib/db';
@@ -40,9 +41,7 @@ export default async function LeadershipPage() {
               {leaders.map((leader) => {
                 const nameParts = leader.name ? leader.name.split(' ') : [];
                 const signatureName = nameParts[1] || leader.name;
-                const photoSrc = leader.photoPath?.startsWith('/')
-                  ? leader.photoPath
-                  : `/${leader.photoPath}`;
+                const photoSrc = getImageUrl(leader, { width: 600, fallbackPath: leader.photoPath || '/assets/img/icon2.png' });
 
                 return (
                   <div className="col-lg-4" key={leader.id}>

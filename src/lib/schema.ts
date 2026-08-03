@@ -47,6 +47,8 @@ export const departmentsMinistries = mysqlTable('departments_ministries', {
   scriptureReference: varchar('scripture_reference', { length: 100 }),
   externalLink: varchar('external_link', { length: 255 }),
   sortOrder: int('sort_order').default(0).notNull(),
+  cloudinaryPublicId: varchar('cloudinary_public_id', { length: 255 }),
+  cloudinarySecureUrl: varchar('cloudinary_secure_url', { length: 500 }),
   createdAt: datetime('created_at', { mode: 'string' })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -61,6 +63,8 @@ export const leadership = mysqlTable('leadership', {
   name: varchar('name', { length: 150 }).notNull(),
   position: varchar('position', { length: 150 }).notNull(),
   photoPath: varchar('photo_path', { length: 255 }),
+  cloudinaryPublicId: varchar('cloudinary_public_id', { length: 255 }),
+  cloudinarySecureUrl: varchar('cloudinary_secure_url', { length: 500 }),
   statement: text('statement'),
   sortOrder: int('sort_order').default(0).notNull(),
   createdAt: datetime('created_at', { mode: 'string' })
@@ -131,6 +135,8 @@ export const resources = mysqlTable('resources', {
   title: varchar('title', { length: 150 }).notNull(),
   description: text('description'),
   iconPath: varchar('icon_path', { length: 255 }),
+  cloudinaryPublicId: varchar('cloudinary_public_id', { length: 255 }),
+  cloudinarySecureUrl: varchar('cloudinary_secure_url', { length: 500 }),
   linkUrl: varchar('link_url', { length: 255 }).notNull(),
   category: varchar('category', { length: 100 }),
   sortOrder: int('sort_order').default(0).notNull(),
@@ -154,6 +160,8 @@ export const missions = mysqlTable('missions', {
   description: text('description'),
   isUpcoming: tinyint('is_upcoming').default(0).notNull(),
   sortOrder: int('sort_order').default(0).notNull(),
+  cloudinaryPublicId: varchar('cloudinary_public_id', { length: 255 }),
+  cloudinarySecureUrl: varchar('cloudinary_secure_url', { length: 500 }),
   createdAt: datetime('created_at', { mode: 'string' })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

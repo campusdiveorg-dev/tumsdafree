@@ -36,6 +36,7 @@ const SCHEMAS: Record<string, any> = {
       { key: 'name', label: 'Full Name', type: 'text', required: true },
       { key: 'position', label: 'Position', type: 'text', required: true },
       { key: 'photo_path', label: 'Photo Path (assets/img/…)', type: 'text' },
+      { key: 'cloudinary_secure_url', label: 'Cloudinary Image', type: 'image' },
       { key: 'statement', label: 'Statement', type: 'textarea' },
       { key: 'sort_order', label: 'Sort Order', type: 'number', default: 0 },
     ],
@@ -84,6 +85,7 @@ const SCHEMAS: Record<string, any> = {
       { key: 'title', label: 'Title', type: 'text', required: true },
       { key: 'description', label: 'Description', type: 'textarea' },
       { key: 'icon_path', label: 'Icon Path', type: 'text' },
+      { key: 'cloudinary_secure_url', label: 'Cloudinary Image', type: 'image' },
       { key: 'link_url', label: 'URL', type: 'url', required: true },
       { key: 'category', label: 'Category', type: 'text' },
       { key: 'sort_order', label: 'Sort Order', type: 'number', default: 0 },
@@ -99,6 +101,7 @@ const SCHEMAS: Record<string, any> = {
       { key: 'theme_song', label: 'Theme Song', type: 'text' },
       { key: 'start_date', label: 'Start Date', type: 'date' },
       { key: 'end_date', label: 'End Date', type: 'date' },
+      { key: 'cloudinary_secure_url', label: 'Cloudinary Image', type: 'image' },
       { key: 'description', label: 'Description', type: 'textarea' },
       { key: 'is_upcoming', label: 'Upcoming (1/0)', type: 'number', default: 0 },
       { key: 'sort_order', label: 'Sort Order', type: 'number', default: 0 },
@@ -111,7 +114,18 @@ function emptyForm(fields: any[]) {
   return Object.fromEntries(fields.map((f) => [f.key, f.default ?? '']));
 }
 
-function FieldInput({ field, value, onChange }: { field: any; value: any; onChange: any }) {
+function FieldInput({
+  field,
+  value,
+  onChange,
+  onImageUpload,
+}: {
+  field: any;
+  value: any;
+  onChange: any;
+  onImageUpload?: (file: File) => void;
+}) {
+  const [uploading, setUploading] = useState(false);
   const base = { className: 'form-control', name: field.key, value: value ?? '', onChange };
   if (field.type === 'textarea') return <textarea {...base} rows={3} />;
   if (field.type === 'select')
@@ -125,6 +139,56 @@ function FieldInput({ field, value, onChange }: { field: any; value: any; onChan
         ))}
       </select>
     );
+
+  if (field.type === 'image') {
+    return (
+      <div className="flex flex-col gap-2">
+        <input type="text" {...base} placeholder="Cloudinary image URL" />
+        <div className="flex items-center gap-2 mt-1">
+          <input
+            type="file"
+            accept="image/*"
+            className="form-control form-control-sm"
+            disabled={uploading}
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              setUploading(true);
+              try {
+                const fd = new FormData();
+                fd.append('file', file);
+                const res = await fetch('/api/cloudinary/upload', {
+                  method: 'POST',
+                  body: fd,
+                });
+                const data = await res.json();
+                if (res.ok && data.secure_url) {
+                  onChange({
+                    target: { name: field.key, value: data.secure_url },
+                  });
+                  if (field.key === 'cloudinary_secure_url') {
+                    onChange({
+                      target: { name: 'cloudinary_public_id', value: data.public_id },
+                    });
+                  }
+                } else {
+                  alert(data.error || 'Upload failed');
+                }
+              } catch (err: any) {
+                alert('Image upload error: ' + err.message);
+              } finally {
+                setUploading(false);
+              }
+            }}
+          />
+          {uploading && <span className="text-sm text-muted">Uploading to Cloudinary…</span>}
+        </div>
+        {value && (
+          <img src={value} alt="Preview" style={{ maxWidth: 120, maxHeight: 80, objectFit: 'cover', borderRadius: 4, marginTop: 4 }} />
+        )}
+      </div>
+    );
+  }
   return <input type={field.type || 'text'} {...base} />;
 }
 
