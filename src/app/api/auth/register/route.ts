@@ -5,7 +5,7 @@ import { jsonOk, jsonError } from '@/lib/response';
 import { getSession } from '@/lib/session';
 import { auditLog } from '@/lib/auth';
 import { eq, sql } from 'drizzle-orm';
-import { hash as argon2Hash, Algorithm } from '@node-rs/argon2';
+import { hash as argon2Hash } from '@node-rs/argon2';
 import crypto from 'crypto';
 
 export async function POST(req: NextRequest) {
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     const userCount = Number(userCountRes[0]?.count || 0);
     const role: 'admin' | 'member' = userCount === 0 ? 'admin' : 'member';
 
-    const hash = await argon2Hash(password, { algorithm: Algorithm.Argon2id });
+    const hash = await argon2Hash(password, { algorithm: 2 });
 
     const insertResult = await db.insert(users).values({
       name: cleanName,
