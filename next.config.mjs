@@ -11,6 +11,9 @@ const nextConfig = {
     // Remove this once all `any` types are resolved.
     ignoreBuildErrors: false,
   },
+  // Prevent webpack from bundling native Node addons — they must be required
+  // at runtime by the Node process, not inlined into the webpack bundle.
+  serverExternalPackages: ['@node-rs/argon2', 'mysql2', 'argon2'],
 };
 
 export default nextConfig;

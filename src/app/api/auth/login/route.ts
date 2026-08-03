@@ -5,7 +5,7 @@ import { jsonOk, jsonError } from '@/lib/response';
 import { getSession } from '@/lib/session';
 import { checkLoginRateLimit } from '@/lib/ratelimit';
 import { eq } from 'drizzle-orm';
-import argon2 from 'argon2';
+import { verify as argon2Verify } from '@node-rs/argon2';
 import crypto from 'crypto';
 
 export async function POST(req: NextRequest) {
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     let isValid = false;
     if (user && user.passwordHash) {
       try {
-        isValid = await argon2.verify(user.passwordHash, password);
+        isValid = await argon2Verify(user.passwordHash, password);
       } catch (err) {
         // Fallback for non-argon2 legacy hashes if any (e.g. bcrypt)
         isValid = false;
