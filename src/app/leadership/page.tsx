@@ -48,7 +48,7 @@ export default async function LeadershipPage() {
               {leaders.map((leader) => {
                 const nameParts = leader.name ? leader.name.split(' ') : [];
                 const signatureName = nameParts[1] || leader.name;
-                const photoSrc = getImageUrl(leader, { width: 600, fallbackPath: leader.photoPath || '/assets/img/icon2.png' });
+                const photoSrc = getImageUrl(leader, { width: 600, fallbackPath: leader.photoPath || leader.photo_path || '/assets/img/icon2.png' });
                 const hasImage = Boolean(leader.cloudinarySecureUrl || leader.cloudinary_secure_url || leader.photoPath || leader.photo_path);
 
                 return (

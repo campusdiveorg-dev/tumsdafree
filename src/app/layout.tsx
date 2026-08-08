@@ -7,7 +7,10 @@ export const metadata: Metadata = {
   title: 'TUMSDA Church',
   description: 'TUMSDA Church - The Church we love the most',
   icons: {
-    icon: '/assets/img/favicon.png',
+    icon: [
+      { url: '/assets/img/favicon.png', type: 'image/png' },
+      { url: '/assets/img/icon.png', type: 'image/png' },
+    ],
     shortcut: '/assets/img/icon.png',
     apple: '/assets/img/icon.png',
   },
@@ -36,7 +39,6 @@ export default function RootLayout({
         <link rel="shortcut icon" href="/assets/img/icon.png" />
         <link rel="apple-touch-icon" href="/assets/img/icon.png" />
         <link rel="stylesheet" href="/assets/bootstrap.min.css" />
-        <link rel="stylesheet" href="/assets/all.min.css" />
         <link rel="stylesheet" href="/assets/style.css?v=1.1" />
         <link rel="stylesheet" href="/assets/style-utils.css" />
       </head>

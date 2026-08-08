@@ -4053,7 +4053,7 @@ footer {
 	width: 100%;
 	height: 100%;
 	min-height: 500px;
-	background-image: url('../img/Challa.png');
+	background-image: url('../img/Sabbath.png');
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -4467,7 +4467,7 @@ body.side-panel-open {
 	width: 100%;
 	height: 100%;
 	min-height: 600px;
-	background-image: url('../img/Challa.png');
+	background-image: url('../img/Sabbath.png');
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -5987,3 +5987,268 @@ body.side-panel-open {
 	}
 }
 
+
+/* ═══════════════════════════════════════════════════════════════
+   SABBATH GALLERY — Leadership page full gallery + lightbox
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Hero Banner ── */
+.sabbath-gallery-section {
+  background: #f8f9ff;
+}
+.sabbath-gallery-hero {
+  background: linear-gradient(135deg, #1a237e 0%, #283593 40%, #3949ab 100%);
+  padding: 64px 0 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.sabbath-gallery-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/assets/img/Sabbath.png') center/cover no-repeat;
+  opacity: 0.15;
+}
+.sabbath-gallery-hero-overlay {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.sabbath-gallery-hero-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+.sabbath-gallery-hero-sub {
+  color: rgba(255,255,255,0.85);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Photo Grid ── */
+.sabbath-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  padding: 36px 0 48px;
+}
+.sabbath-gallery-item {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 4/3;
+  background: #e8eaf6;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.sabbath-gallery-item:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(26,35,126,0.18);
+}
+.sabbath-gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.sabbath-gallery-item:hover .sabbath-gallery-img {
+  transform: scale(1.06);
+}
+.sabbath-gallery-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+  padding: 20px 12px 12px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sabbath-gallery-item:hover .sabbath-gallery-overlay {
+  opacity: 1;
+}
+.sabbath-gallery-caption {
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.sabbath-gallery-date {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.75rem;
+}
+
+/* ── Lightbox ── */
+.sabbath-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+
+.sabbath-lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.sabbath-lightbox-img {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 8px;
+  object-fit: contain;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.sabbath-lightbox-close {
+  position: fixed;
+  top: 16px; right: 20px;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s;
+}
+.sabbath-lightbox-close:hover { background: rgba(255,255,255,0.3); }
+.sabbath-lightbox-nav {
+  position: fixed;
+  top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s;
+  z-index: 10000;
+}
+.sabbath-lightbox-nav:hover { background: rgba(255,255,255,0.3); }
+.sabbath-lightbox-prev { left: 16px; }
+.sabbath-lightbox-next { right: 16px; }
+.sabbath-lightbox-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.sabbath-lightbox-title {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+}
+.sabbath-lightbox-date {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.85rem;
+}
+.sabbath-lightbox-counter {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SABBATH PREVIEW — Home page 4-photo strip
+   ═══════════════════════════════════════════════════════════════ */
+.sabbath-preview-section {
+  padding: 40px 0;
+  background: #fff;
+  border-top: 1px solid #e8eaf6;
+  border-bottom: 1px solid #e8eaf6;
+}
+.sabbath-preview-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.sabbath-preview-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1a237e;
+  margin: 0 0 4px;
+}
+.sabbath-preview-sub {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin: 0;
+}
+.sabbath-preview-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a237e;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+.sabbath-preview-link:hover { color: #3949ab; text-decoration: underline; }
+.sabbath-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+@media (max-width: 768px) {
+  .sabbath-preview-grid { grid-template-columns: repeat(2, 1fr); }
+  .sabbath-gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .sabbath-lightbox-nav { display: none; }
+}
+@media (max-width: 480px) {
+  .sabbath-preview-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+}
+.sabbath-preview-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 1/1;
+  background: #e8eaf6;
+}
+.sabbath-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+.sabbath-preview-item:hover .sabbath-preview-img {
+  transform: scale(1.08);
+}
+.sabbath-preview-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.65), transparent);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 12px 8px 6px;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.sabbath-preview-item:hover .sabbath-preview-caption {
+  opacity: 1;
+}

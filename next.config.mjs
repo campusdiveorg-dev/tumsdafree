@@ -13,6 +13,7 @@ const nextConfig = {
   },
   // Next.js 14: prevent webpack from bundling native Node addons.
   // (renamed to `serverExternalPackages` in Next.js 15+)
+  outputFileTracing: false,
   experimental: {
     serverComponentsExternalPackages: ['@node-rs/argon2', 'mysql2'],
   },

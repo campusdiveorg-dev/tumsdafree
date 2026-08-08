@@ -6,13 +6,20 @@ import { getImageUrl } from '@/lib/cloudinaryUrl';
 interface MissionItem {
   id: number;
   title: string;
+  // camelCase (Drizzle ORM) OR snake_case (raw pool) — accept both
   themeText?: string | null;
+  theme_text?: string | null;
   themeVerse?: string | null;
+  theme_verse?: string | null;
   themeSong?: string | null;
+  theme_song?: string | null;
   startDate?: string | null;
+  start_date?: string | null;
   endDate?: string | null;
+  end_date?: string | null;
   description?: string | null;
-  isUpcoming: number;
+  isUpcoming?: number | null;
+  is_upcoming?: number | null;
   cloudinarySecureUrl?: string | null;
   cloudinary_secure_url?: string | null;
 }
@@ -23,6 +30,10 @@ export default function MissionAccordion({ missions }: { missions: MissionItem[]
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+  // helpers to read either camelCase or snake_case
+  const g = (m: MissionItem, camel: keyof MissionItem, snake: keyof MissionItem) =>
+    m[camel] ?? m[snake] ?? null;
 
   const formatDateShort = (d: string | null) => {
     if (!d) return '';
@@ -38,6 +49,13 @@ export default function MissionAccordion({ missions }: { missions: MissionItem[]
     <div className="mission-accordion" id="missionAccordion">
       {missions.map((mission, index) => {
         const isOpen = openIndex === index;
+        const startDate = g(mission, 'startDate', 'start_date') as string | null;
+        const endDate   = g(mission, 'endDate',   'end_date')   as string | null;
+        const themeText = g(mission, 'themeText', 'theme_text') as string | null;
+        const themeVerse = g(mission, 'themeVerse', 'theme_verse') as string | null;
+        const themeSong  = g(mission, 'themeSong',  'theme_song')  as string | null;
+        const isUpcoming = Number(g(mission, 'isUpcoming', 'is_upcoming') ?? 0);
+
         return (
           <div className={`mission-accordion-item ${isOpen ? 'active' : ''}`} key={mission.id}>
             <button
@@ -47,17 +65,17 @@ export default function MissionAccordion({ missions }: { missions: MissionItem[]
               aria-expanded={isOpen}
             >
               <span className="mission-accordion-left">
-                {mission.isUpcoming ? (
+                {isUpcoming ? (
                   <span className="mission-badge upcoming">UPCOMING</span>
                 ) : (
                   <span className="mission-badge past">PAST</span>
                 )}
                 <span className="mission-accordion-title">{mission.title}</span>
               </span>
-              {mission.startDate && mission.endDate && (
+              {startDate && endDate && (
                 <span className="mission-accordion-date">
                   <i className="fas fa-calendar-alt me-1"></i>
-                  {formatDateShort(mission.startDate)} – {formatDateShort(mission.endDate)}
+                  {formatDateShort(startDate)} – {formatDateShort(endDate)}
                 </span>
               )}
               <span className="mission-accordion-chevron">
@@ -80,28 +98,28 @@ export default function MissionAccordion({ missions }: { missions: MissionItem[]
                     />
                   </div>
                 )}
-                {(mission.themeText || mission.themeVerse || mission.themeSong) && (
+                {(themeText || themeVerse || themeSong) && (
                   <div className="mission-theme-banner">
                     <div className="mission-theme-inner">
                       <h3 className="mission-theme-title">{mission.title}</h3>
-                      {mission.themeText && <p className="mission-theme-text">{mission.themeText}</p>}
+                      {themeText && <p className="mission-theme-text">{themeText}</p>}
                       <div className="mission-theme-meta">
-                        {mission.themeVerse && (
+                        {themeVerse && (
                           <span className="mission-meta-tag">
                             <i className="fas fa-book-open me-1"></i>
-                            {mission.themeVerse}
+                            {themeVerse}
                           </span>
                         )}
-                        {mission.themeSong && (
+                        {themeSong && (
                           <span className="mission-meta-tag">
                             <i className="fas fa-music me-1"></i>
-                            {mission.themeSong}
+                            {themeSong}
                           </span>
                         )}
-                        {mission.startDate && mission.endDate && (
+                        {startDate && endDate && (
                           <span className="mission-meta-tag">
                             <i className="fas fa-calendar-alt me-1"></i>
-                            {formatDateFull(mission.startDate)} – {formatDateFull(mission.endDate)}
+                            {formatDateFull(startDate)} – {formatDateFull(endDate)}
                           </span>
                         )}
                       </div>
@@ -120,7 +138,7 @@ export default function MissionAccordion({ missions }: { missions: MissionItem[]
                   </div>
                 )}
 
-                {Boolean(mission.isUpcoming) && (
+                {Boolean(isUpcoming) && (
                   <div className="mission-cta-section">
                     <div className="mission-cta-card">
                       <div className="mission-cta-icon">
