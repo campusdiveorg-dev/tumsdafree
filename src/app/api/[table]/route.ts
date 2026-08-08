@@ -4,16 +4,17 @@ import { jsonOk, jsonError } from '@/lib/response';
 import { requireAdmin, auditLog } from '@/lib/auth';
 
 const ALLOWED_TABLES: Record<string, string[]> = {
-  departments: ['name', 'description', 'scripture_quote', 'scripture_reference', 'external_link', 'sort_order'],
-  ministries: ['name', 'description', 'scripture_quote', 'scripture_reference', 'sort_order'],
-  leadership: ['name', 'position', 'photo_path', 'statement', 'sort_order'],
+  departments: ['name', 'description', 'scripture_quote', 'scripture_reference', 'external_link', 'sort_order', 'cloudinary_public_id', 'cloudinary_secure_url'],
+  ministries: ['name', 'description', 'scripture_quote', 'scripture_reference', 'sort_order', 'cloudinary_public_id', 'cloudinary_secure_url'],
+  leadership: ['name', 'position', 'photo_path', 'statement', 'sort_order', 'cloudinary_public_id', 'cloudinary_secure_url'],
   sermons: ['title', 'youtube_url', 'description', 'is_featured', 'published_at'],
   events: ['title', 'event_date', 'facilitator', 'description'],
   weekly_meetings: ['day_of_week', 'time_range', 'program_name', 'sort_order'],
-  resources: ['title', 'description', 'icon_path', 'link_url', 'category', 'sort_order'],
-  missions: ['title', 'theme_text', 'theme_verse', 'theme_song', 'start_date', 'end_date', 'description', 'is_upcoming', 'sort_order'],
+  resources: ['title', 'description', 'icon_path', 'link_url', 'category', 'sort_order', 'cloudinary_public_id', 'cloudinary_secure_url'],
+  missions: ['title', 'theme_text', 'theme_verse', 'theme_song', 'start_date', 'end_date', 'description', 'is_upcoming', 'sort_order', 'cloudinary_public_id', 'cloudinary_secure_url'],
   announcements: ['title', 'content', 'sort_order'],
   word_of_the_day: ['content', 'reference'],
+  sabbath_gallery: ['title', 'image_url', 'date_taken', 'sort_order'],
 };
 
 function getTableConfig(table: string) {
@@ -32,6 +33,7 @@ function getTableConfig(table: string) {
   else if (table === 'sermons') orderBy = 'published_at DESC, id';
   else if (table === 'weekly_meetings') orderBy = 'sort_order, id';
   else if (table === 'word_of_the_day') orderBy = 'id DESC';
+  else if (table === 'sabbath_gallery') orderBy = 'sort_order ASC, date_taken DESC, id DESC';
 
   return { realTable, whereClause, orderBy, fields: ALLOWED_TABLES[table] };
 }

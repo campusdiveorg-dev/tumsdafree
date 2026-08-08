@@ -251,3 +251,19 @@ export const wordOfTheDay = mysqlTable('word_of_the_day', {
     .default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`)
     .notNull(),
 });
+
+// ── SABBATH GALLERY ───────────────────────────────────────────────────
+export const sabbathGallery = mysqlTable('sabbath_gallery', {
+  id: int('id', { unsigned: true }).primaryKey().autoincrement(),
+  title: varchar('title', { length: 150 }),
+  imageUrl: varchar('image_url', { length: 1000 }).notNull(),
+  dateTaken: date('date_taken', { mode: 'string' }),
+  sortOrder: int('sort_order').default(0).notNull(),
+  createdAt: datetime('created_at', { mode: 'string' })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: datetime('updated_at', { mode: 'string' })
+    .default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`)
+    .notNull(),
+});
+

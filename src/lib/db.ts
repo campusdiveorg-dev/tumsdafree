@@ -32,12 +32,23 @@ function createPool() {
 
   const pool = mysql.createPool({
     uri: cleanConnectionString,
-    connectionLimit: 10,
+    connectionLimit: 5,          // TiDB serverless has tight limits
     waitForConnections: true,
     queueLimit: 0,
     enableKeepAlive: true,
-    keepAliveInitialDelay: 0,
+    keepAliveInitialDelay: 10000, // send keepalive after 10s idle
+    connectTimeout: 15000,        // give TiDB 15s to accept connection
+    idleTimeout: 60000,           // recycle connections idle > 60s before TiDB drops them
     ssl: isTidbSsl ? { minVersion: 'TLSv1.2', rejectUnauthorized: true, ...(ca && { ca }) } : undefined,
+  });
+
+  // Swallow connection-level errors so the pool stays alive
+  pool.on('connection', (conn) => {
+    conn.on('error', (err) => {
+      if ((err as NodeJS.ErrnoException).code === 'ECONNRESET') {
+        console.warn('[db] Connection reset by server – will be replaced by pool.');
+      }
+    });
   });
 
   return pool;

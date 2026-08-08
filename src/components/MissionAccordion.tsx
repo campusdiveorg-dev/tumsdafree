@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { getImageUrl } from '@/lib/cloudinaryUrl';
 
 interface MissionItem {
   id: number;
@@ -12,6 +13,8 @@ interface MissionItem {
   endDate?: string | null;
   description?: string | null;
   isUpcoming: number;
+  cloudinarySecureUrl?: string | null;
+  cloudinary_secure_url?: string | null;
 }
 
 export default function MissionAccordion({ missions }: { missions: MissionItem[] }) {
@@ -68,6 +71,15 @@ export default function MissionAccordion({ missions }: { missions: MissionItem[]
               style={{ display: isOpen ? 'block' : 'none' }}
             >
               <div className="mission-accordion-body">
+                {(mission.cloudinarySecureUrl || mission.cloudinary_secure_url) && (
+                  <div style={{ marginBottom: 20, textAlign: 'center' }}>
+                    <img
+                      src={getImageUrl(mission, { width: 900 })}
+                      alt={mission.title}
+                      style={{ maxWidth: '100%', maxHeight: 400, borderRadius: 8, objectFit: 'cover' }}
+                    />
+                  </div>
+                )}
                 {(mission.themeText || mission.themeVerse || mission.themeSong) && (
                   <div className="mission-theme-banner">
                     <div className="mission-theme-inner">

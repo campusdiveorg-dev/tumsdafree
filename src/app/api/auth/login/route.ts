@@ -10,8 +10,13 @@ import crypto from 'crypto';
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = req.headers.get('x-forwarded-for') || req.ip || '127.0.0.1';
-    const rateCheck = await checkLoginRateLimit(ip);
+    const ip = req.headers.get('x-forwarded-for') || '127.0.0.1';
+    let rateCheck = { success: true };
+    try {
+      rateCheck = await checkLoginRateLimit(ip);
+    } catch (e) {
+      console.warn('[RateLimit check fallback]', e);
+    }
     if (!rateCheck.success) {
       return jsonError('Too many login attempts. Please try again in 15 minutes.', 429);
     }

@@ -5,16 +5,26 @@ import Link from 'next/link';
 import ProtectedRoute from '@/components/admin/ProtectedRoute';
 import Layout from '@/components/admin/Layout';
 import { api } from '@/services/api';
+import {
+  Building2,
+  BookOpen,
+  Crown,
+  Radio,
+  Calendar,
+  Clock,
+  Compass,
+  FileText,
+} from 'lucide-react';
 
 const CONTENT_TABLES = [
-  { key: 'departments', label: 'Departments', icon: '🏛️' },
-  { key: 'ministries', label: 'Ministries', icon: '📖' },
-  { key: 'leadership', label: 'Leadership', icon: '👑' },
-  { key: 'sermons', label: 'Sermons', icon: '🎙️' },
-  { key: 'events', label: 'Events', icon: '📅' },
-  { key: 'weekly_meetings', label: 'Weekly Meetings', icon: '🗓️' },
-  { key: 'missions', label: 'Missions', icon: '✈️' },
-  { key: 'resources', label: 'Resources', icon: '📚' },
+  { key: 'departments', label: 'Departments', icon: <Building2 size={24} /> },
+  { key: 'ministries', label: 'Ministries', icon: <BookOpen size={24} /> },
+  { key: 'leadership', label: 'Leadership', icon: <Crown size={24} /> },
+  { key: 'sermons', label: 'Sermons', icon: <Radio size={24} /> },
+  { key: 'events', label: 'Events', icon: <Calendar size={24} /> },
+  { key: 'weekly_meetings', label: 'Weekly Meetings', icon: <Clock size={24} /> },
+  { key: 'missions', label: 'Missions', icon: <Compass size={24} /> },
+  { key: 'resources', label: 'Resources', icon: <FileText size={24} /> },
 ];
 
 export default function DashboardPage() {
@@ -114,7 +124,9 @@ export default function DashboardPage() {
                       onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--brand)')}
                       onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border)')}
                     >
-                      <span style={{ fontSize: 26, marginBottom: 6 }}>{t.icon}</span>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--brand)', marginBottom: 6 }}>
+                        {t.icon}
+                      </span>
                       <span style={{ fontWeight: 600, fontSize: 13 }}>{t.label}</span>
                       <span style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>
                         {counts[t.key] ?? '…'} items

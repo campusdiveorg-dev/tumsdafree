@@ -3,6 +3,7 @@ import Footer from '@/components/Footer';
 import { db } from '@/lib/db';
 import { departmentsMinistries } from '@/lib/schema';
 import { eq, asc } from 'drizzle-orm';
+import { getImageUrl } from '@/lib/cloudinaryUrl';
 
 export const revalidate = 60;
 
@@ -31,37 +32,44 @@ export default async function DepartmentsPage() {
               </div>
             </div>
             <div className="row g-4 mt-4">
-              {departments.map((dept) => (
-                <div className="col-lg-6" key={dept.id}>
-                  <div className="card department-card h-100 shadow-sm">
-                    <div className="card-body">
-                      <h5 className="card-title mb-3">{dept.name}</h5>
-                      <p className="card-text mb-3">{dept.description}</p>
-                      {dept.scriptureQuote && (
-                        <blockquote className="blockquote mb-3">
-                          <footer className="blockquote-footer">
-                            <cite title="Source Title">
-                              "{dept.scriptureQuote}" {dept.scriptureReference}
-                            </cite>
-                          </footer>
-                        </blockquote>
+              {departments.map((dept) => {
+                const hasImg = Boolean(dept.cloudinarySecureUrl || dept.cloudinary_secure_url);
+                const imgUrl = getImageUrl(dept, { width: 600 });
+                return (
+                  <div className="col-lg-6" key={dept.id}>
+                    <div className="card department-card h-100 shadow-sm overflow-hidden">
+                      {hasImg && (
+                        <img src={imgUrl} alt={dept.name} className="card-img-top" style={{ maxHeight: 220, objectFit: 'cover' }} />
                       )}
-                      {dept.externalLink && (
-                        <p className="mb-0">
-                          <a
-                            href={dept.externalLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn btn-outline-primary btn-sm"
-                          >
-                            Visit Site
-                          </a>
-                        </p>
-                      )}
+                      <div className="card-body">
+                        <h5 className="card-title mb-3">{dept.name}</h5>
+                        <p className="card-text mb-3">{dept.description}</p>
+                        {dept.scriptureQuote && (
+                          <blockquote className="blockquote mb-3">
+                            <footer className="blockquote-footer">
+                              <cite title="Source Title">
+                                "{dept.scriptureQuote}" {dept.scriptureReference}
+                              </cite>
+                            </footer>
+                          </blockquote>
+                        )}
+                        {dept.externalLink && (
+                          <p className="mb-0">
+                            <a
+                              href={dept.externalLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="btn btn-outline-primary btn-sm"
+                            >
+                              Visit Site
+                            </a>
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>

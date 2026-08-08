@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import ProtectedRoute from '@/components/admin/ProtectedRoute';
 import Layout from '@/components/admin/Layout';
 import { usersApi } from '@/services/api';
+import { Shield, UserX, UserCheck, Trash2 } from 'lucide-react';
 
 export default function MembersPage() {
   const [members, setMembers] = useState<any[]>([]);
@@ -143,20 +144,20 @@ export default function MembersPage() {
                           <div className="flex gap-2">
                             {m.is_active ? (
                               <>
-                                <button className="btn btn-ghost btn-sm" onClick={() => toggleRole(m)}>
-                                  Toggle Role
+                                <button className="btn btn-ghost btn-sm" onClick={() => toggleRole(m)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                  <Shield size={14} /> Toggle Role
                                 </button>
-                                <button className="btn btn-ghost btn-sm" onClick={() => deactivate(m)}>
-                                  Deactivate
+                                <button className="btn btn-ghost btn-sm" onClick={() => deactivate(m)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                  <UserX size={14} /> Deactivate
                                 </button>
                               </>
                             ) : (
-                              <button className="btn btn-ghost btn-sm" onClick={() => activate(m)}>
-                                Activate
+                              <button className="btn btn-ghost btn-sm" onClick={() => activate(m)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                <UserCheck size={14} /> Activate
                               </button>
                             )}
-                            <button className="btn btn-danger btn-sm" onClick={() => deleteMember(m)}>
-                              Delete
+                            <button className="btn btn-danger btn-sm" onClick={() => deleteMember(m)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                              <Trash2 size={14} /> Delete
                             </button>
                           </div>
                         </td>

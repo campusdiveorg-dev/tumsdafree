@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import ProtectedRoute from '@/components/admin/ProtectedRoute';
 import Layout from '@/components/admin/Layout';
 import { api } from '@/services/api';
+import { Plus, Pencil, Trash2, X, Upload, Image as ImageIcon } from 'lucide-react';
 
 const SCHEMAS: Record<string, any> = {
   departments: {
@@ -15,6 +16,7 @@ const SCHEMAS: Record<string, any> = {
       { key: 'scripture_quote', label: 'Scripture Quote', type: 'textarea' },
       { key: 'scripture_reference', label: 'Scripture Ref', type: 'text' },
       { key: 'external_link', label: 'External Link (URL)', type: 'url' },
+      { key: 'cloudinary_secure_url', label: 'Cloudinary Image', type: 'image' },
       { key: 'sort_order', label: 'Sort Order', type: 'number', default: 0 },
     ],
     preview: (r: any) => r.name,
@@ -26,6 +28,7 @@ const SCHEMAS: Record<string, any> = {
       { key: 'description', label: 'Description', type: 'textarea' },
       { key: 'scripture_quote', label: 'Scripture Quote', type: 'textarea' },
       { key: 'scripture_reference', label: 'Scripture Ref', type: 'text' },
+      { key: 'cloudinary_secure_url', label: 'Cloudinary Image', type: 'image' },
       { key: 'sort_order', label: 'Sort Order', type: 'number', default: 0 },
     ],
     preview: (r: any) => r.name,
@@ -108,6 +111,40 @@ const SCHEMAS: Record<string, any> = {
     ],
     preview: (r: any) => r.title,
   },
+  announcements: {
+    label: 'Announcements',
+    fields: [
+      { key: 'title', label: 'Announcement Title', type: 'text', required: true },
+      { key: 'content', label: 'Content / Details', type: 'textarea', required: true },
+      { key: 'sort_order', label: 'Sort Order (lower = first)', type: 'number', default: 0 },
+    ],
+    preview: (r: any) => r.title,
+  },
+  word_of_the_day: {
+    label: 'Word of the Day',
+    fields: [
+      { key: 'content', label: 'Scripture / Quote', type: 'textarea', required: true },
+      { key: 'reference', label: 'Bible Reference (e.g. John 3:16)', type: 'text', required: true },
+    ],
+    preview: (r: any) => `${r.reference} — ${(r.content || '').slice(0, 60)}…`,
+  },
+  sabbath_gallery: {
+    label: 'Sabbath Gallery',
+    fields: [
+      {
+        key: 'image_url',
+        label: 'Image URL (paste Google / web link)',
+        type: 'url',
+        required: true,
+        placeholder: 'https://…',
+      },
+      { key: 'title', label: 'Caption (optional)', type: 'text' },
+      { key: 'date_taken', label: 'Date Taken', type: 'date' },
+      { key: 'sort_order', label: 'Sort Order (lower = first)', type: 'number', default: 0 },
+    ],
+    preview: (r: any) => r.title || r.image_url?.slice(0, 60) + '…',
+  },
+
 };
 
 function emptyForm(fields: any[]) {
@@ -286,8 +323,8 @@ export default function ContentTablePage() {
           <h2 style={{ flex: 1, fontSize: 15, fontWeight: 600 }}>
             {rows.length} item{rows.length !== 1 ? 's' : ''}
           </h2>
-          <button className="btn btn-primary" onClick={openCreate}>
-            + Add {schema.label.replace(/s$/, '')}
+          <button className="btn btn-primary" onClick={openCreate} style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <Plus size={16} /> Add {schema.label.replace(/s$/, '')}
           </button>
         </div>
 
@@ -310,7 +347,7 @@ export default function ContentTablePage() {
                   <tr>
                     <th>#</th>
                     <th>Item</th>
-                    <th style={{ width: 120 }}>Actions</th>
+                    <th style={{ width: 140 }}>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -329,15 +366,16 @@ export default function ContentTablePage() {
                       </td>
                       <td>
                         <div className="flex gap-2">
-                          <button className="btn btn-ghost btn-sm" onClick={() => openEdit(row)}>
-                            Edit
+                          <button className="btn btn-ghost btn-sm" onClick={() => openEdit(row)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                            <Pencil size={14} /> Edit
                           </button>
                           <button
                             className="btn btn-danger btn-sm"
                             disabled={deleting === row.id}
                             onClick={() => handleDelete(row.id)}
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}
                           >
-                            {deleting === row.id ? '…' : 'Delete'}
+                            {deleting === row.id ? '…' : <><Trash2 size={14} /> Delete</>}
                           </button>
                         </div>
                       </td>
@@ -355,7 +393,7 @@ export default function ContentTablePage() {
               <div className="admin-modal-header">
                 {editRow ? `Edit ${schema.label.replace(/s$/, '')}` : `New ${schema.label.replace(/s$/, '')}`}
                 <button className="btn btn-ghost btn-sm btn-icon" onClick={() => setShowModal(false)}>
-                  ✕
+                  <X size={18} />
                 </button>
               </div>
               <form onSubmit={handleSave}>

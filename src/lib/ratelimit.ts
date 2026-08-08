@@ -19,9 +19,17 @@ if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) 
 
 export async function checkLoginRateLimit(ip: string): Promise<{ success: boolean }> {
   if (!ratelimit) {
-    // If Upstash is not configured, pass through (e.g. local dev fallback)
+    // If Upstash is not configured, pass through
     return { success: true };
   }
-  const result = await ratelimit.limit(ip);
-  return { success: result.success };
+  try {
+    const timeoutPromise = new Promise<{ success: boolean }>((resolve) =>
+      setTimeout(() => resolve({ success: true }), 2000)
+    );
+    const limitPromise = ratelimit.limit(ip).then((res) => ({ success: res.success }));
+    return await Promise.race([limitPromise, timeoutPromise]);
+  } catch (err) {
+    console.warn('[RateLimit warning] Upstash Redis check failed, allowing request:', err);
+    return { success: true };
+  }
 }

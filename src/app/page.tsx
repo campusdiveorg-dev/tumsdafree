@@ -1,9 +1,10 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { db } from '@/lib/db';
-import { missions, wordOfTheDay as wordTable, announcements as annTable } from '@/lib/schema';
+import { missions, wordOfTheDay as wordTable, announcements as annTable, sabbathGallery as galleryTable } from '@/lib/schema';
 import { eq, asc, desc } from 'drizzle-orm';
 import Link from 'next/link';
+import SabbathGallery from '@/components/SabbathGallery';
 
 export const revalidate = 60; // Revalidate every 60 seconds
 
@@ -11,6 +12,7 @@ export default async function HomePage() {
   let upcomingMission = null;
   let wordOfTheDay = null;
   let announcements: any[] = [];
+  let galleryPreview: any[] = [];
 
   try {
     const missionRows = await db
@@ -28,9 +30,16 @@ export default async function HomePage() {
       .select()
       .from(annTable)
       .orderBy(asc(annTable.sortOrder), desc(annTable.id));
+
+    galleryPreview = await db
+      .select()
+      .from(galleryTable)
+      .orderBy(asc(galleryTable.sortOrder), desc(galleryTable.dateTaken))
+      .limit(4);
   } catch (err) {
     console.error('[HomePage DB error]', err);
   }
+
 
   const formatDate = (d: string | null) => {
     if (!d) return '';
@@ -240,6 +249,11 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+
+        {/* Sabbath Was Nice — Preview Strip */}
+        {galleryPreview.length > 0 && (
+          <SabbathGallery photos={galleryPreview} previewMode />
+        )}
 
         {/* Upcoming Mission Section */}
         <section className="homepage-mission-section">

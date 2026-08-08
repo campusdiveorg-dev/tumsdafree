@@ -2,18 +2,25 @@ import { getImageUrl } from '@/lib/cloudinaryUrl';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { db } from '@/lib/db';
-import { leadership as leadershipTable } from '@/lib/schema';
-import { asc } from 'drizzle-orm';
+import { leadership as leadershipTable, sabbathGallery as galleryTable } from '@/lib/schema';
+import { asc, desc } from 'drizzle-orm';
+import SabbathGallery from '@/components/SabbathGallery';
 
 export const revalidate = 60;
 
 export default async function LeadershipPage() {
   let leaders: any[] = [];
+  let galleryPhotos: any[] = [];
   try {
     leaders = await db.select().from(leadershipTable).orderBy(asc(leadershipTable.sortOrder));
+    galleryPhotos = await db
+      .select()
+      .from(galleryTable)
+      .orderBy(asc(galleryTable.sortOrder), desc(galleryTable.dateTaken));
   } catch (err) {
     console.error('[LeadershipPage DB error]', err);
   }
+
 
   const web3Key = process.env.WEB3FORMS_ACCESS_KEY || 'f0ddf1cb-9e8c-494f-a7a1-262385c5a479';
 
@@ -42,11 +49,12 @@ export default async function LeadershipPage() {
                 const nameParts = leader.name ? leader.name.split(' ') : [];
                 const signatureName = nameParts[1] || leader.name;
                 const photoSrc = getImageUrl(leader, { width: 600, fallbackPath: leader.photoPath || '/assets/img/icon2.png' });
+                const hasImage = Boolean(leader.cloudinarySecureUrl || leader.cloudinary_secure_url || leader.photoPath || leader.photo_path);
 
                 return (
                   <div className="col-lg-4" key={leader.id}>
                     <div className="leadership-card">
-                      {leader.photoPath && (
+                      {hasImage && (
                         <div className="leadership-image">
                           <img src={photoSrc} alt={leader.name} className="leadership-photo" />
                         </div>
@@ -68,6 +76,9 @@ export default async function LeadershipPage() {
             </div>
           </div>
         </section>
+
+        {/* Sabbath Was Nice Gallery */}
+        <SabbathGallery photos={galleryPhotos} />
 
         {/* Contact Us Section */}
         <section className="section contact-section bg-light" id="contact">
