@@ -145,8 +145,7 @@ export default async function HomePage() {
               <div className="col-lg-8 text-center">
                 <h2 className="fw-bold mb-3">About TUMSDA</h2>
                 <p className="mb-3">
-                  TUMSDA Church is a Seventh-day Adventist Sabbath school in Ziwani District located at the Technical
-                  University of Mombasa (TUM) in Tudor. We nurture a deep love for the Bible...
+                  TUMSDA Church is a Seventh-day Adventist Sabbath school in Ziwani District located at the Technical University of Mombasa (TUM) in Tudor. We nurture a deep love for the Bible and the Spirit of Prophecy (Isaiah 8:20) through study, prayer, and sacred music.
                 </p>
                 <Link href="/about" className="btn btn-sm btn-outline-primary">
                   Learn More
@@ -233,9 +232,8 @@ export default async function HomePage() {
                         {announcements.map((ann, i) => (
                           <div
                             key={ann.id}
-                            className={`announcement-item ${
-                              i < announcements.length - 1 ? 'mb-3 pb-3 border-bottom' : ''
-                            }`}
+                            className={`announcement-item ${i < announcements.length - 1 ? 'mb-3 pb-3 border-bottom' : ''
+                              }`}
                           >
                             <h6 className="fw-semibold text-primary mb-2">{ann.title}</h6>
                             <p className="mb-0 small text-muted">{ann.content}</p>
