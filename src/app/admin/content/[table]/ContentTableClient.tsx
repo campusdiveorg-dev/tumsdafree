@@ -228,9 +228,9 @@ function FieldInput({
   return <input type={field.type || 'text'} {...base} />;
 }
 
-export default function ContentTableClient() {
+export default function ContentTableClient({ table: propTable }: { table?: string }) {
   const params = useParams();
-  const table = (params?.table as string) || '';
+  const table = propTable || (params?.table as string) || '';
   const schema = SCHEMAS[table];
 
   const [rows, setRows] = useState<any[]>([]);
