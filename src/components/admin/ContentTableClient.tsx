@@ -104,8 +104,12 @@ const SCHEMAS: Record<string, any> = {
       { key: 'theme_song', label: 'Theme Song', type: 'text' },
       { key: 'start_date', label: 'Start Date', type: 'date' },
       { key: 'end_date', label: 'End Date', type: 'date' },
-      { key: 'cloudinary_secure_url', label: 'Cloudinary Image', type: 'image' },
+      { key: 'cloudinary_secure_url', label: 'Mission Cover Image', type: 'image' },
       { key: 'description', label: 'Description', type: 'textarea' },
+      { key: 'chair_name', label: 'Mission Chair Name', type: 'text' },
+      { key: 'chair_title', label: 'Mission Chair Title', type: 'text', default: 'Mission Chair' },
+      { key: 'chair_message', label: 'Mission Chair Message', type: 'textarea' },
+      { key: 'chair_cloudinary_secure_url', label: 'Mission Chair Photo', type: 'image' },
       { key: 'is_upcoming', label: 'Upcoming (1/0)', type: 'number', default: 0 },
       { key: 'sort_order', label: 'Sort Order', type: 'number', default: 0 },
     ],
@@ -205,6 +209,10 @@ function FieldInput({
                   if (field.key === 'cloudinary_secure_url') {
                     onChange({
                       target: { name: 'cloudinary_public_id', value: data.public_id },
+                    });
+                  } else if (field.key === 'chair_cloudinary_secure_url') {
+                    onChange({
+                      target: { name: 'chair_cloudinary_public_id', value: data.public_id },
                     });
                   }
                 } else {

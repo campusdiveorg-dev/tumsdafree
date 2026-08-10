@@ -22,6 +22,14 @@ interface MissionItem {
   is_upcoming?: number | null;
   cloudinarySecureUrl?: string | null;
   cloudinary_secure_url?: string | null;
+  chairName?: string | null;
+  chair_name?: string | null;
+  chairTitle?: string | null;
+  chair_title?: string | null;
+  chairMessage?: string | null;
+  chair_message?: string | null;
+  chairCloudinarySecureUrl?: string | null;
+  chair_cloudinary_secure_url?: string | null;
 }
 
 export default function MissionAccordion({ missions }: { missions: MissionItem[] }) {
@@ -55,6 +63,11 @@ export default function MissionAccordion({ missions }: { missions: MissionItem[]
         const themeVerse = g(mission, 'themeVerse', 'theme_verse') as string | null;
         const themeSong  = g(mission, 'themeSong',  'theme_song')  as string | null;
         const isUpcoming = Number(g(mission, 'isUpcoming', 'is_upcoming') ?? 0);
+
+        const chairName = g(mission, 'chairName', 'chair_name') as string | null;
+        const chairTitle = g(mission, 'chairTitle', 'chair_title') as string | null;
+        const chairMessage = g(mission, 'chairMessage', 'chair_message') as string | null;
+        const chairPhoto = g(mission, 'chairCloudinarySecureUrl', 'chair_cloudinary_secure_url') as string | null;
 
         return (
           <div className={`mission-accordion-item ${isOpen ? 'active' : ''}`} key={mission.id}>
@@ -162,7 +175,13 @@ export default function MissionAccordion({ missions }: { missions: MissionItem[]
                         <button className="btn-mission outline support-btn">
                           <i className="fas fa-hand-holding-heart me-2"></i>Support
                         </button>
-                        <button className="btn-mission outline mission-chair-btn">
+                        <button
+                          className="btn-mission outline mission-chair-btn"
+                          data-chair-name={chairName || ''}
+                          data-chair-title={chairTitle || ''}
+                          data-chair-message={chairMessage || ''}
+                          data-chair-photo={chairPhoto || ''}
+                        >
                           <i className="fas fa-user-tie me-2"></i>Mission Chair
                         </button>
                       </div>

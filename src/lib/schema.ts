@@ -162,6 +162,11 @@ export const missions = mysqlTable('missions', {
   sortOrder: int('sort_order').default(0).notNull(),
   cloudinaryPublicId: varchar('cloudinary_public_id', { length: 255 }),
   cloudinarySecureUrl: varchar('cloudinary_secure_url', { length: 500 }),
+  chairName: varchar('chair_name', { length: 150 }),
+  chairTitle: varchar('chair_title', { length: 150 }),
+  chairMessage: text('chair_message'),
+  chairCloudinaryPublicId: varchar('chair_cloudinary_public_id', { length: 255 }),
+  chairCloudinarySecureUrl: varchar('chair_cloudinary_secure_url', { length: 500 }),
   createdAt: datetime('created_at', { mode: 'string' })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

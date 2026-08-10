@@ -13,7 +13,7 @@ const ALLOWED_TABLES: Record<string, string[]> = {
   events: ['title', 'event_date', 'facilitator', 'description'],
   weekly_meetings: ['day_of_week', 'time_range', 'program_name', 'sort_order'],
   resources: ['title', 'description', 'icon_path', 'link_url', 'category', 'sort_order', 'cloudinary_public_id', 'cloudinary_secure_url'],
-  missions: ['title', 'theme_text', 'theme_verse', 'theme_song', 'start_date', 'end_date', 'description', 'is_upcoming', 'sort_order', 'cloudinary_public_id', 'cloudinary_secure_url'],
+  missions: ['title', 'theme_text', 'theme_verse', 'theme_song', 'start_date', 'end_date', 'description', 'is_upcoming', 'sort_order', 'cloudinary_public_id', 'cloudinary_secure_url', 'chair_name', 'chair_title', 'chair_message', 'chair_cloudinary_public_id', 'chair_cloudinary_secure_url'],
   announcements: ['title', 'content', 'sort_order'],
   word_of_the_day: ['content', 'reference'],
   sabbath_gallery: ['title', 'image_url', 'date_taken', 'sort_order'],
