@@ -158,8 +158,7 @@ export default async function HomePage() {
                   <div className="card-body text-center">
                     <h5 className="card-title fw-bold">Our Mission</h5>
                     <p className="mb-0">
-                      To make disciples of all people, communicating the everlasting gospel in the context of the three
-                      angels' messages of Revelation 14:6-12...
+                      To make disciples of all people, communicating the everlasting gospel in the context of the three angels' messages of Revelation 14:6-12, leading them to accept Jesus as personal Saviour and unite with His remnant Church, discipling them to serve Him as Lord and preparing them for His soon return.
                     </p>
                   </div>
                 </div>
@@ -169,8 +168,7 @@ export default async function HomePage() {
                   <div className="card-body text-center">
                     <h5 className="card-title fw-bold">Our Vision</h5>
                     <p className="mb-0">
-                      To uphold the distinctive message of the Seventh-day Adventist Church; to aspire to excellence in
-                      all aspects of their lives...
+                      To uphold the distinctive message of the Seventh-day Adventist Church; to aspire to excellence in all aspects of their lives - academic, social and spiritual; to embrace the call to radical discipleship, including a life of missionary service; and to be supportive and respectful to the denomination's leadership while remaining a youth-led Church.
                     </p>
                   </div>
                 </div>
