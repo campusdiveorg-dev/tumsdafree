@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { db } from '@/lib/db';
@@ -5,7 +6,33 @@ import { weeklyMeetings as meetingsTable, events as eventsTable } from '@/lib/sc
 import { asc } from 'drizzle-orm';
 import Link from 'next/link';
 
+export const metadata: Metadata = {
+  title: 'About TUMSDA — History, Mission & Beliefs',
+  description:
+    'Learn about TUMSDA Church — founded in 1982 at the Technical University of Mombasa. Discover our history, Seventh-day Adventist beliefs, mission, vision, weekly meetings schedule, and church calendar.',
+  keywords: [
+    'about TUMSDA Church',
+    'TUMSDA history',
+    'Seventh-day Adventist beliefs Kenya',
+    'SDA 28 fundamental beliefs',
+    'Sabbath school meetings Mombasa',
+    'TUM church history',
+    'church calendar Mombasa',
+  ],
+  alternates: {
+    canonical: 'https://tumsda.org/about',
+  },
+  openGraph: {
+    title: 'About TUMSDA — History, Mission & Beliefs | Mombasa SDA Church',
+    description:
+      'Founded in 1982, TUMSDA Church at the Technical University of Mombasa upholds Seventh-day Adventist beliefs. Explore our history, mission, vision, and weekly worship schedule.',
+    url: 'https://tumsda.org/about',
+    images: [{ url: 'https://tumsda.org/assets/og-image.png', width: 1200, height: 630 }],
+  },
+};
+
 export const revalidate = 60;
+
 
 export default async function AboutPage() {
   let weeklyMeetings: any[] = [];

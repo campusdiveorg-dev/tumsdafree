@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { getImageUrl } from '@/lib/cloudinaryUrl';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -6,7 +7,34 @@ import { leadership as leadershipTable, sabbathGallery as galleryTable } from '@
 import { asc, desc } from 'drizzle-orm';
 import SabbathGallery from '@/components/SabbathGallery';
 
+export const metadata: Metadata = {
+  title: 'Leadership — Church Officers & Pastoral Team',
+  description:
+    'Meet the leadership team of TUMSDA Church — our church officers, elders, and ministry leaders who guide our Seventh-day Adventist community in Mombasa, Kenya. Get in touch with us.',
+  keywords: [
+    'TUMSDA leadership',
+    'church officers Mombasa',
+    'SDA church elders Kenya',
+    'TUMSDA contact',
+    'church leadership Kenya',
+    'Adventist church officers Mombasa',
+    'TUMSDA pastoral team',
+  ],
+  alternates: {
+    canonical: 'https://tumsda.org/leadership',
+  },
+  openGraph: {
+    title: 'TUMSDA Church Leadership | Officers & Pastoral Team Mombasa',
+    description:
+      'Meet the dedicated leadership of TUMSDA Church. Connect with our church officers and ministry leaders in Mombasa, Kenya.',
+    url: 'https://tumsda.org/leadership',
+    images: [{ url: 'https://tumsda.org/assets/og-image.png', width: 1200, height: 630 }],
+  },
+};
+
 export const revalidate = 60;
+
+
 
 export default async function LeadershipPage() {
   let leaders: any[] = [];

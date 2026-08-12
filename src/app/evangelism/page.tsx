@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { db } from '@/lib/db';
@@ -5,7 +6,34 @@ import { missions } from '@/lib/schema';
 import { asc } from 'drizzle-orm';
 import MissionAccordion from '@/components/MissionAccordion';
 
+export const metadata: Metadata = {
+  title: 'Evangelism & Missions — Gospel Outreach in Kenya',
+  description:
+    'TUMSDA Church is committed to spreading the everlasting gospel through evangelism and missionary work in Mombasa and beyond. Explore our past and upcoming mission programmes.',
+  keywords: [
+    'TUMSDA evangelism',
+    'SDA missions Kenya',
+    'Adventist outreach Mombasa',
+    'gospel mission Kenya',
+    'church evangelism Mombasa',
+    'missionary work Kenya',
+    'Seventh-day Adventist missions',
+    'three angels message',
+  ],
+  alternates: {
+    canonical: 'https://tumsda.org/evangelism',
+  },
+  openGraph: {
+    title: 'TUMSDA Evangelism & Missions | Gospel Outreach Mombasa Kenya',
+    description:
+      'Join TUMSDA Church in spreading the everlasting gospel. Explore our missionary programmes and upcoming evangelistic campaigns in Mombasa, Kenya.',
+    url: 'https://tumsda.org/evangelism',
+    images: [{ url: 'https://tumsda.org/assets/og-image.png', width: 1200, height: 630 }],
+  },
+};
+
 export const revalidate = 60;
+
 
 export default async function EvangelismPage() {
   let missionList: any[] = [];

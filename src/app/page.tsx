@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { db } from '@/lib/db';
@@ -6,7 +7,33 @@ import { eq, asc, desc } from 'drizzle-orm';
 import Link from 'next/link';
 import SabbathGallery from '@/components/SabbathGallery';
 
+export const metadata: Metadata = {
+  title: 'TUMSDA Church — Welcome | Seventh-day Adventist, Mombasa Kenya',
+  description:
+    'Welcome to TUMSDA Church — a vibrant Seventh-day Adventist Sabbath school at the Technical University of Mombasa (TUM), Tudor. Join us for worship, Bible study, choir music, and community missions.',
+  keywords: [
+    'TUMSDA Church',
+    'Seventh-day Adventist Mombasa',
+    'SDA church Kenya',
+    'church TUM Tudor',
+    'Sabbath worship Mombasa',
+    'TUMSDA choir',
+    'Christian community Mombasa',
+  ],
+  alternates: {
+    canonical: 'https://tumsda.org',
+  },
+  openGraph: {
+    title: 'TUMSDA Church — Welcome | Seventh-day Adventist, Mombasa',
+    description:
+      'Join TUMSDA Church for Sabbath worship, Bible study, sacred music, and outreach at the Technical University of Mombasa, Kenya.',
+    url: 'https://tumsda.org',
+    images: [{ url: 'https://tumsda.org/assets/og-image.png', width: 1200, height: 630 }],
+  },
+};
+
 export const revalidate = 60; // Revalidate every 60 seconds
+
 
 export default async function HomePage() {
   let upcomingMission = null;

@@ -1,10 +1,38 @@
+import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { db } from '@/lib/db';
 import { resources as resourcesTable } from '@/lib/schema';
 import { asc } from 'drizzle-orm';
 
+export const metadata: Metadata = {
+  title: 'Sermons & Resources — Bible Messages & Study Materials',
+  description:
+    'Access TUMSDA Church sermons, Bible study guides, and spiritual resources. Watch past messages on YouTube and download study materials to deepen your faith journey.',
+  keywords: [
+    'TUMSDA sermons',
+    'SDA sermons Kenya',
+    'Seventh-day Adventist sermons Mombasa',
+    'Bible study resources',
+    'TUMSDA YouTube',
+    'church sermons online Kenya',
+    'Adventist Bible study materials',
+    'spiritual resources Kenya',
+  ],
+  alternates: {
+    canonical: 'https://tumsda.org/sermons',
+  },
+  openGraph: {
+    title: 'TUMSDA Sermons & Resources | Bible Messages from Mombasa SDA',
+    description:
+      'Watch TUMSDA Church sermons on YouTube and access Bible study guides. Inspiring messages rooted in Scripture from our Mombasa community.',
+    url: 'https://tumsda.org/sermons',
+    images: [{ url: 'https://tumsda.org/assets/og-image.png', width: 1200, height: 630 }],
+  },
+};
+
 export const revalidate = 60;
+
 
 export default async function SermonsPage() {
   let dbResources: any[] = [];

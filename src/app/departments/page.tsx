@@ -1,9 +1,34 @@
+import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { db } from '@/lib/db';
 import { departmentsMinistries } from '@/lib/schema';
 import { eq, asc } from 'drizzle-orm';
 import { getImageUrl } from '@/lib/cloudinaryUrl';
+
+export const metadata: Metadata = {
+  title: 'Departments — Church Ministries & Service Units',
+  description:
+    'Explore the departments of TUMSDA Church — including the Adventist Ladies Organisation (ALO), Youth, Communication, and more. Each department serves a unique role in our community.',
+  keywords: [
+    'TUMSDA departments',
+    'Adventist Ladies Organisation Mombasa',
+    'ALO SDA',
+    'church departments Kenya',
+    'SDA youth department',
+    'church service units Mombasa',
+  ],
+  alternates: {
+    canonical: 'https://tumsda.org/departments',
+  },
+  openGraph: {
+    title: 'TUMSDA Church Departments | Adventist Community Mombasa',
+    description:
+      'Discover the TUMSDA Church departments that keep our community thriving — from the Adventist Ladies Organisation to Youth and Communication.',
+    url: 'https://tumsda.org/departments',
+    images: [{ url: 'https://tumsda.org/assets/og-image.png', width: 1200, height: 630 }],
+  },
+};
 
 export const revalidate = 60;
 

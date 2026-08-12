@@ -1,9 +1,35 @@
+import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { db } from '@/lib/db';
 import { departmentsMinistries } from '@/lib/schema';
 import { eq, asc } from 'drizzle-orm';
 import { getImageUrl } from '@/lib/cloudinaryUrl';
+
+export const metadata: Metadata = {
+  title: 'Ministries — Join a Ministry & Grow in Faith',
+  description:
+    'Join one of TUMSDA Church’s ministries and grow in fellowship, service, and discipleship. Explore our music ministry, prayer ministry, Bible study groups, and more in Mombasa, Kenya.',
+  keywords: [
+    'TUMSDA ministries',
+    'church ministries Mombasa',
+    'SDA music ministry Kenya',
+    'prayer ministry Kenya',
+    'Bible study groups Mombasa',
+    'Adventist discipleship',
+    'community outreach Kenya',
+  ],
+  alternates: {
+    canonical: 'https://tumsda.org/ministries',
+  },
+  openGraph: {
+    title: 'TUMSDA Ministries | Join a Ministry & Grow in Faith',
+    description:
+      'Explore TUMSDA Church ministries in Mombasa — music, prayer, Bible study, and outreach. Find your calling and serve with purpose.',
+    url: 'https://tumsda.org/ministries',
+    images: [{ url: 'https://tumsda.org/assets/og-image.png', width: 1200, height: 630 }],
+  },
+};
 
 export const revalidate = 60;
 
