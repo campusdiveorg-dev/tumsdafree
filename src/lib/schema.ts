@@ -262,6 +262,8 @@ export const sabbathGallery = mysqlTable('sabbath_gallery', {
   id: int('id', { unsigned: true }).primaryKey().autoincrement(),
   title: varchar('title', { length: 150 }),
   imageUrl: varchar('image_url', { length: 1000 }).notNull(),
+  linkUrl: varchar('link_url', { length: 500 }),
+  icon: varchar('icon', { length: 50 }),
   dateTaken: date('date_taken', { mode: 'string' }),
   sortOrder: int('sort_order').default(0).notNull(),
   createdAt: datetime('created_at', { mode: 'string' })

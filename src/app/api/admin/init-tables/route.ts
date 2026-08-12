@@ -34,7 +34,17 @@ export async function POST(req: NextRequest) {
     `);
     results.push('word_of_the_day: OK');
 
-    return jsonOk({ message: 'Tables initialised', results });
+    // Update sabbath_gallery columns
+    try {
+      await pool.query(`ALTER TABLE \`sabbath_gallery\` MODIFY COLUMN \`image_url\` VARCHAR(1000) NULL`);
+      await pool.query(`ALTER TABLE \`sabbath_gallery\` ADD COLUMN \`link_url\` VARCHAR(500) NULL`);
+      await pool.query(`ALTER TABLE \`sabbath_gallery\` ADD COLUMN \`icon\` VARCHAR(50) NULL`);
+      results.push('sabbath_gallery schema update: OK');
+    } catch (e: any) {
+      results.push('sabbath_gallery schema note: ' + e.message);
+    }
+
+    return jsonOk({ message: 'Tables initialised & migrated', results });
   } catch (err: any) {
     if (err.message === 'UNAUTHORIZED') return jsonError('Unauthorized', 401);
     if (err.message === 'FORBIDDEN') return jsonError('Forbidden', 403);

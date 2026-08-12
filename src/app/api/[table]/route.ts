@@ -16,7 +16,7 @@ const ALLOWED_TABLES: Record<string, string[]> = {
   missions: ['title', 'theme_text', 'theme_verse', 'theme_song', 'start_date', 'end_date', 'description', 'is_upcoming', 'sort_order', 'cloudinary_public_id', 'cloudinary_secure_url', 'chair_name', 'chair_title', 'chair_message', 'chair_cloudinary_public_id', 'chair_cloudinary_secure_url'],
   announcements: ['title', 'content', 'sort_order'],
   word_of_the_day: ['content', 'reference'],
-  sabbath_gallery: ['title', 'image_url', 'date_taken', 'sort_order'],
+  sabbath_gallery: ['title', 'image_url', 'link_url', 'icon', 'date_taken', 'sort_order'],
 };
 
 function getTableConfig(table: string) {

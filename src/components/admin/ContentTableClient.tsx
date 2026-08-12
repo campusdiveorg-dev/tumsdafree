@@ -133,20 +133,32 @@ const SCHEMAS: Record<string, any> = {
     preview: (r: any) => `${r.reference} — ${(r.content || '').slice(0, 60)}…`,
   },
   sabbath_gallery: {
-    label: 'Sabbath Gallery',
+    label: 'Sabbath Gallery Collections',
     fields: [
+      { key: 'title', label: 'Collection Title (e.g. Finalist Sabbath 2025)', type: 'text', required: true },
+      {
+        key: 'link_url',
+        label: 'Photos Platform Link (Google Drive, Google Photos, Flickr link)',
+        type: 'url',
+        placeholder: 'https://drive.google.com/…',
+      },
       {
         key: 'image_url',
-        label: 'Image URL (paste Google / web link)',
+        label: 'Cover Image URL (for Homepage Card)',
         type: 'url',
-        required: true,
         placeholder: 'https://…',
       },
-      { key: 'title', label: 'Caption (optional)', type: 'text' },
+      {
+        key: 'icon',
+        label: 'Collection Icon',
+        type: 'select',
+        options: ['crown', 'users', 'user', 'graduation-cap', 'gem', 'image'],
+        default: 'users',
+      },
       { key: 'date_taken', label: 'Date Taken', type: 'date' },
       { key: 'sort_order', label: 'Sort Order (lower = first)', type: 'number', default: 0 },
     ],
-    preview: (r: any) => r.title || r.image_url?.slice(0, 60) + '…',
+    preview: (r: any) => `${r.title || 'Untitled'} ${r.link_url ? '🔗 (' + r.link_url.slice(0, 30) + '…)' : ''}`,
   },
 };
 

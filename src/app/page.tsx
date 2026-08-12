@@ -273,10 +273,8 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Sabbath Was Nice — Preview Strip */}
-        {galleryPreview.length > 0 && (
-          <SabbathGallery photos={galleryPreview} previewMode />
-        )}
+        {/* Sabbath Was Nice — Homepage Collection Cards */}
+        <SabbathGallery photos={galleryPreview} previewMode />
 
         {/* Upcoming Mission Section */}
         <section className="homepage-mission-section">

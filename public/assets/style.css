@@ -6308,3 +6308,95 @@ body.side-panel-open {
 .sabbath-preview-item:hover .sabbath-preview-caption {
   opacity: 1;
 }
+
+/* ── SABBATH GALLERY BLUE BANNER & COLLECTIONS MODAL ── */
+.sabbath-blue-banner {
+  background: linear-gradient(135deg, #0d6efd 0%, #0052cc 100%);
+  color: #ffffff;
+  border-radius: 20px;
+}
+.text-white-90 { color: rgba(255, 255, 255, 0.9); }
+.max-w-700 { max-width: 700px; }
+.hover-scale { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.hover-scale:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); }
+
+/* Homepage Collection Cards (Image Top + White Title Footer Below) */
+.sabbath-card-box {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  border: 1px solid #e2e8f0 !important;
+}
+.sabbath-card-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(13, 110, 253, 0.18) !important;
+  border-color: #3b82f6 !important;
+}
+.sabbath-card-box:hover .sabbath-card-img {
+  transform: scale(1.06);
+}
+.sabbath-card-img {
+  transition: transform 0.35s ease;
+}
+
+/* Compact Modal Popup Styles */
+.sabbath-compact-modal {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  background: #ffffff;
+  border-radius: 20px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+.btn-close-red {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  background-color: #f87171 !important;
+  color: #ffffff;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  z-index: 10;
+}
+.btn-close-red:hover {
+  background-color: #ef4444 !important;
+  transform: scale(1.08);
+}
+.sabbath-title-underline {
+  background-color: #0d6efd;
+  border-radius: 2px;
+}
+.sabbath-collections-list {
+  max-height: 340px;
+  overflow-y: auto;
+}
+.sabbath-collections-list::-webkit-scrollbar {
+  width: 5px;
+}
+.sabbath-collections-list::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 4px;
+}
+.sabbath-collection-btn {
+  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+  padding: 12px 16px !important;
+  border-radius: 12px !important;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+.sabbath-collection-btn:hover {
+  background: linear-gradient(135deg, #0a58ca 0%, #084298 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.28) !important;
+}
+
+/* Modal Animations */
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-pop-in {
+  animation: popIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+
