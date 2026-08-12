@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-const BASE_URL = 'https://tumsda.org';
+const BASE_URL = 'https://tumsdachurch.org';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

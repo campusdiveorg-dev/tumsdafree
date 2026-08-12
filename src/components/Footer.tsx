@@ -332,7 +332,7 @@ export default function Footer() {
             <div className="col-lg-8">
               <div className="footer-section">
                 <p className="footer-official-statement">
-                  tumsda.org is the official website of the Seventh-day Adventist Church, Technical University of Mombasa.
+                  tumsdachurch.org is the official website of the Seventh-day Adventist Church, Technical University of Mombasa.
                 </p>
               </div>
             </div>

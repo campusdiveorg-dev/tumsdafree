@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     'church calendar Mombasa',
   ],
   alternates: {
-    canonical: 'https://tumsda.org/about',
+    canonical: 'https://tumsdachurch.org/about',
   },
   openGraph: {
     title: 'About TUMSDA — History, Mission & Beliefs | Mombasa SDA Church',
     description:
       'Founded in 1982, TUMSDA Church at the Technical University of Mombasa upholds Seventh-day Adventist beliefs. Explore our history, mission, vision, and weekly worship schedule.',
-    url: 'https://tumsda.org/about',
-    images: [{ url: 'https://tumsda.org/assets/og-image.png', width: 1200, height: 630 }],
+    url: 'https://tumsdachurch.org/about',
+    images: [{ url: 'https://tumsdachurch.org/assets/og-image.png', width: 1200, height: 630 }],
   },
 };
 

@@ -4,7 +4,7 @@ import Script from 'next/script';
 import PublicLayout from '@/components/PublicLayout';
 import StructuredData from '@/components/StructuredData';
 
-const BASE_URL = 'https://tumsda.org';
+const BASE_URL = 'https://tumsdachurch.org';
 
 export const metadata: Metadata = {
   // ─── Base & Title ──────────────────────────────────────────────────────────
@@ -84,7 +84,7 @@ export const metadata: Metadata = {
   // TODO: After creating your Google Search Console account, replace the
   // placeholder below with your real verification token:
   //   1. Go to https://search.google.com/search-console
-  //   2. Add property → URL prefix → https://tumsda.org
+  //   2. Add property → URL prefix → https://tumsdachurch.org
   //   3. Choose "HTML tag" method → copy the content= value
   //   4. Replace 'PASTE_YOUR_GSC_TOKEN_HERE' with that value
   verification: {

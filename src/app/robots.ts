@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin', '/api'],
       },
     ],
-    sitemap: 'https://tumsda.org/sitemap.xml',
-    host: 'https://tumsda.org',
+    sitemap: 'https://tumsdachurch.org/sitemap.xml',
+    host: 'https://tumsdachurch.org',
   };
 }

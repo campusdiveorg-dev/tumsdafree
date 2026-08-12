@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     'spiritual resources Kenya',
   ],
   alternates: {
-    canonical: 'https://tumsda.org/sermons',
+    canonical: 'https://tumsdachurch.org/sermons',
   },
   openGraph: {
     title: 'TUMSDA Sermons & Resources | Bible Messages from Mombasa SDA',
     description:
       'Watch TUMSDA Church sermons on YouTube and access Bible study guides. Inspiring messages rooted in Scripture from our Mombasa community.',
-    url: 'https://tumsda.org/sermons',
-    images: [{ url: 'https://tumsda.org/assets/og-image.png', width: 1200, height: 630 }],
+    url: 'https://tumsdachurch.org/sermons',
+    images: [{ url: 'https://tumsdachurch.org/assets/og-image.png', width: 1200, height: 630 }],
   },
 };
 

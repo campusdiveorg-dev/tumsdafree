@@ -21,14 +21,14 @@ export const metadata: Metadata = {
     'TUMSDA pastoral team',
   ],
   alternates: {
-    canonical: 'https://tumsda.org/leadership',
+    canonical: 'https://tumsdachurch.org/leadership',
   },
   openGraph: {
     title: 'TUMSDA Church Leadership | Officers & Pastoral Team Mombasa',
     description:
       'Meet the dedicated leadership of TUMSDA Church. Connect with our church officers and ministry leaders in Mombasa, Kenya.',
-    url: 'https://tumsda.org/leadership',
-    images: [{ url: 'https://tumsda.org/assets/og-image.png', width: 1200, height: 630 }],
+    url: 'https://tumsdachurch.org/leadership',
+    images: [{ url: 'https://tumsdachurch.org/assets/og-image.png', width: 1200, height: 630 }],
   },
 };
 

@@ -19,7 +19,7 @@ interface StructuredDataProps {
   includeWebSite?: boolean;
 }
 
-const BASE_URL = 'https://tumsda.org';
+const BASE_URL = 'https://tumsdachurch.org';
 
 // Organisation & Place of Worship — rendered on every page via layout.tsx
 const organizationSchema = {
@@ -68,7 +68,7 @@ const organizationSchema = {
   ],
   sameAs: [
     'https://www.youtube.com/@tumsdachurchchoir',
-    'https://tumsda.org',
+    'https://tumsdachurch.org',
   ],
   contactPoint: {
     '@type': 'ContactPoint',

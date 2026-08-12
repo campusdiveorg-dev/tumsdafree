@@ -21,14 +21,14 @@ export const metadata: Metadata = {
     'Christian community Mombasa',
   ],
   alternates: {
-    canonical: 'https://tumsda.org',
+    canonical: 'https://tumsdachurch.org',
   },
   openGraph: {
     title: 'TUMSDA Church — Welcome | Seventh-day Adventist, Mombasa',
     description:
       'Join TUMSDA Church for Sabbath worship, Bible study, sacred music, and outreach at the Technical University of Mombasa, Kenya.',
-    url: 'https://tumsda.org',
-    images: [{ url: 'https://tumsda.org/assets/og-image.png', width: 1200, height: 630 }],
+    url: 'https://tumsdachurch.org',
+    images: [{ url: 'https://tumsdachurch.org/assets/og-image.png', width: 1200, height: 630 }],
   },
 };
 

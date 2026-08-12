@@ -19,14 +19,14 @@ export const metadata: Metadata = {
     'church service units Mombasa',
   ],
   alternates: {
-    canonical: 'https://tumsda.org/departments',
+    canonical: 'https://tumsdachurch.org/departments',
   },
   openGraph: {
     title: 'TUMSDA Church Departments | Adventist Community Mombasa',
     description:
       'Discover the TUMSDA Church departments that keep our community thriving — from the Adventist Ladies Organisation to Youth and Communication.',
-    url: 'https://tumsda.org/departments',
-    images: [{ url: 'https://tumsda.org/assets/og-image.png', width: 1200, height: 630 }],
+    url: 'https://tumsdachurch.org/departments',
+    images: [{ url: 'https://tumsdachurch.org/assets/og-image.png', width: 1200, height: 630 }],
   },
 };
 

@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     'community outreach Kenya',
   ],
   alternates: {
-    canonical: 'https://tumsda.org/ministries',
+    canonical: 'https://tumsdachurch.org/ministries',
   },
   openGraph: {
     title: 'TUMSDA Ministries | Join a Ministry & Grow in Faith',
     description:
       'Explore TUMSDA Church ministries in Mombasa — music, prayer, Bible study, and outreach. Find your calling and serve with purpose.',
-    url: 'https://tumsda.org/ministries',
-    images: [{ url: 'https://tumsda.org/assets/og-image.png', width: 1200, height: 630 }],
+    url: 'https://tumsdachurch.org/ministries',
+    images: [{ url: 'https://tumsdachurch.org/assets/og-image.png', width: 1200, height: 630 }],
   },
 };
 

@@ -21,14 +21,14 @@ export const metadata: Metadata = {
     'three angels message',
   ],
   alternates: {
-    canonical: 'https://tumsda.org/evangelism',
+    canonical: 'https://tumsdachurch.org/evangelism',
   },
   openGraph: {
     title: 'TUMSDA Evangelism & Missions | Gospel Outreach Mombasa Kenya',
     description:
       'Join TUMSDA Church in spreading the everlasting gospel. Explore our missionary programmes and upcoming evangelistic campaigns in Mombasa, Kenya.',
-    url: 'https://tumsda.org/evangelism',
-    images: [{ url: 'https://tumsda.org/assets/og-image.png', width: 1200, height: 630 }],
+    url: 'https://tumsdachurch.org/evangelism',
+    images: [{ url: 'https://tumsdachurch.org/assets/og-image.png', width: 1200, height: 630 }],
   },
 };
 
