@@ -158,7 +158,7 @@ export default async function LeadershipPage() {
                       <strong>Phone:</strong> <a href="tel:+254712345678">+254712345678</a>
                     </p>
                     <p>
-                      <strong>Email:</strong> <a href="mailto:tumsda@gmail.com">tumsda@gmail.com</a>
+                      <strong>Email:</strong> <a href="mailto:sdachurchtumsda@gmail.com">sdachurchtumsda@gmail.com</a>
                     </p>
                     <p>
                       <strong>Service Times:</strong>
