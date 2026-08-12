@@ -88,7 +88,7 @@ export const metadata: Metadata = {
   //   3. Choose "HTML tag" method → copy the content= value
   //   4. Replace 'PASTE_YOUR_GSC_TOKEN_HERE' with that value
   verification: {
-    google: 'PASTE_YOUR_GSC_TOKEN_HERE',
+    google: 'wSr-oW5UBcs9VnBAIiiGbb5N8jEj8xPRV7ihKzWqHjU',
   },
 
   // ─── Icons ─────────────────────────────────────────────────────────────────
