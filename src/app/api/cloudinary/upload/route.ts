@@ -8,8 +8,7 @@ import { jsonOk, jsonError } from '@/lib/response';
 import { requireAdmin } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 
-const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB — any file type accepted
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,12 +23,8 @@ export async function POST(req: NextRequest) {
       return jsonError('No file provided in request body.', 400);
     }
 
-    if (!ALLOWED_MIME_TYPES.includes(file.type)) {
-      return jsonError(`Invalid file type (${file.type}). Allowed: JPG, PNG, WEBP, GIF, SVG.`, 400);
-    }
-
     if (file.size > MAX_FILE_SIZE) {
-      return jsonError(`File size exceeds maximum allowed 5MB limit.`, 400);
+      return jsonError('File size exceeds the 50 MB limit.', 400);
     }
 
     const arrayBuffer = await file.arrayBuffer();
@@ -37,8 +32,14 @@ export async function POST(req: NextRequest) {
 
     const folderName = table ? `tumsda/${table}` : 'tumsda';
 
+    // resource_type 'auto' lets Cloudinary handle images, PDFs, documents,
+    // audio, video and any other file format automatically.
     const uploadResult = await uploaderUpload(buffer, {
       folder: folderName,
+      resource_type: 'auto' as const,
+      // Preserve the original filename so the download link is meaningful
+      use_filename: true,
+      unique_filename: true,
     });
 
     const publicId = uploadResult.public_id;

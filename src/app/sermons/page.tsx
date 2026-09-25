@@ -5,6 +5,91 @@ import { db } from '@/lib/db';
 import { resources as resourcesTable } from '@/lib/schema';
 import { asc } from 'drizzle-orm';
 
+// Static fallback resources shown when the DB table is empty
+const STATIC_RESOURCES = [
+  {
+    id: 's1',
+    title: 'Sabbath School Lessons',
+    description: 'Weekly Bible study lessons and materials',
+    iconPath: '/assets/SS.png',
+    cloudinarySecureUrl: null,
+    linkUrl: 'https://absg.sspmadventist.org/en/2025-03/11/videos',
+    linkLabel: 'Access Lessons',
+  },
+  {
+    id: 's2',
+    title: 'Bible Study Guides',
+    description: 'Comprehensive Bible study resources',
+    iconPath: '/assets/BS.jpeg',
+    cloudinarySecureUrl: null,
+    linkUrl: 'https://adventist.org/beliefs/bible/study',
+    linkLabel: 'Study Bible',
+  },
+  {
+    id: 's3',
+    title: 'Bible Study & Prayer',
+    description: 'Interactive Bible study and prayer resources',
+    iconPath: '/assets/PY.jpg',
+    cloudinarySecureUrl: null,
+    linkUrl: 'https://sspmadventist.org/sabbathschool/alive/biblestudyandprayer',
+    linkLabel: 'Study & Pray',
+  },
+  {
+    id: 's4',
+    title: 'Adventist Beliefs',
+    description: 'Official Adventist beliefs and doctrines',
+    iconPath: '/assets/AB.png',
+    cloudinarySecureUrl: null,
+    linkUrl: 'https://adventist.org/beliefs',
+    linkLabel: 'Learn Beliefs',
+  },
+  {
+    id: 's5',
+    title: 'Music Philosophy',
+    description: 'Seventh-day Adventist philosophy of music and worship',
+    iconPath: '/assets/MP.png',
+    cloudinarySecureUrl: null,
+    linkUrl: 'https://gc.adventist.org/guidelines/a-seventh-day-adventist-philosophy-of-music/',
+    linkLabel: 'Read Philosophy',
+  },
+  {
+    id: 's6',
+    title: 'Young Adults',
+    description: 'Resources and studies for young adults',
+    iconPath: '/assets/YA.jpg',
+    cloudinarySecureUrl: null,
+    linkUrl: 'https://inverse.sspmadventist.org/',
+    linkLabel: 'Join Young Adults',
+  },
+  {
+    id: 's7',
+    title: 'Adventist Pioneer Library',
+    description: 'Historical writings and pioneer literature',
+    iconPath: '/assets/AP.png',
+    cloudinarySecureUrl: null,
+    linkUrl: 'https://m.egwwritings.org/en/folders/15',
+    linkLabel: 'Explore Library',
+  },
+  {
+    id: 's8',
+    title: 'EGW Writings',
+    description: 'Complete collection of Ellen G. White writings',
+    iconPath: '/assets/EGW.png',
+    cloudinarySecureUrl: null,
+    linkUrl: 'https://m.egwwritings.org/en/folders/2',
+    linkLabel: 'Read Writings',
+  },
+  {
+    id: 's9',
+    title: 'Adventist Archives',
+    description: 'Historical documents and research materials',
+    iconPath: '/assets/AA.jpeg',
+    cloudinarySecureUrl: null,
+    linkUrl: 'https://www.adventistarchives.org/',
+    linkLabel: 'Browse Archives',
+  },
+];
+
 export const metadata: Metadata = {
   title: 'Sermons & Resources — Bible Messages & Study Materials',
   description:
@@ -254,7 +339,7 @@ export default async function SermonsPage() {
           </div>
         </section>
 
-        {/* Resources Section */}
+        {/* Resources Section — data driven from DB, static fallback when empty */}
         <section className="section resources-section bg-light">
           <div className="container">
             <div className="row">
@@ -269,202 +354,43 @@ export default async function SermonsPage() {
                 <div className="resource-category">
                   <h4 className="fw-semibold mb-4 text-center">Study Resources</h4>
                   <div className="resource-list">
-                    <div className="resource-item">
-                      <div className="resource-icon">
-                        <img src="/assets/SS.png" alt="Sabbath School" className="resource-icon-img" />
-                      </div>
-                      <div className="resource-content">
-                        <h6 className="fw-semibold">Sabbath School Lessons</h6>
-                        <p className="text-muted small mb-2">Weekly Bible study lessons and materials</p>
-                        <a
-                          href="https://absg.sspmadventist.org/en/2025-03/11/videos"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-outline-primary btn-sm"
-                        >
-                          Access Lessons
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="resource-item">
-                      <div className="resource-icon">
-                        <img src="/assets/BS.jpeg" alt="Bible Study" className="resource-icon-img" />
-                      </div>
-                      <div className="resource-content">
-                        <h6 className="fw-semibold">Bible Study Guides</h6>
-                        <p className="text-muted small mb-2">Comprehensive Bible study resources</p>
-                        <a
-                          href="https://adventist.org/beliefs/bible/study"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-outline-primary btn-sm"
-                        >
-                          Study Bible
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="resource-item">
-                      <div className="resource-icon">
-                        <img src="/assets/PY.jpg" alt="Prayer" className="resource-icon-img" />
-                      </div>
-                      <div className="resource-content">
-                        <h6 className="fw-semibold">Bible Study &amp; Prayer</h6>
-                        <p className="text-muted small mb-2">Interactive Bible study and prayer resources</p>
-                        <a
-                          href="https://sspmadventist.org/sabbathschool/alive/biblestudyandprayer"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-outline-primary btn-sm"
-                        >
-                          Study &amp; Pray
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="resource-item">
-                      <div className="resource-icon">
-                        <img src="/assets/AB.png" alt="Adventist Beliefs" className="resource-icon-img" />
-                      </div>
-                      <div className="resource-content">
-                        <h6 className="fw-semibold">Adventist Beliefs</h6>
-                        <p className="text-muted small mb-2">Official Adventist beliefs and doctrines</p>
-                        <a
-                          href="https://adventist.org/beliefs"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-outline-primary btn-sm"
-                        >
-                          Learn Beliefs
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="resource-item">
-                      <div className="resource-icon">
-                        <picture>
-                          <source type="image/webp" srcSet="/assets/img/webp/MP.webp" />
-                          <img
-                            src="/assets/MP.png"
-                            alt="Music Philosophy"
-                            className="resource-icon-img"
-                            loading="lazy"
-                          />
-                        </picture>
-                      </div>
-                      <div className="resource-content">
-                        <h6 className="fw-semibold">Music Philosophy</h6>
-                        <p className="text-muted small mb-2">
-                          Seventh-day Adventist philosophy of music and worship
-                        </p>
-                        <a
-                          href="https://gc.adventist.org/guidelines/a-seventh-day-adventist-philosophy-of-music/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-outline-primary btn-sm"
-                        >
-                          Read Philosophy
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="resource-item">
-                      <div className="resource-icon">
-                        <picture>
-                          <source type="image/webp" srcSet="/assets/img/webp/YA.webp" />
-                          <source type="image/jpeg" srcSet="/assets/img/jpg/YA.jpg" />
-                          <img
-                            src="/assets/YA.jpg"
-                            alt="Young Adults"
-                            className="resource-icon-img"
-                            loading="lazy"
-                          />
-                        </picture>
-                      </div>
-                      <div className="resource-content">
-                        <h6 className="fw-semibold">Young Adults</h6>
-                        <p className="text-muted small mb-2">Resources and studies for young adults</p>
-                        <a
-                          href="https://inverse.sspmadventist.org/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-outline-primary btn-sm"
-                        >
-                          Join Young Adults
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="resource-item">
-                      <div className="resource-icon">
-                        <picture>
-                          <source type="image/webp" srcSet="/assets/img/webp/AP.webp" />
-                          <img
-                            src="/assets/AP.png"
-                            alt="Adventist Pioneer"
-                            className="resource-icon-img"
-                            loading="lazy"
-                          />
-                        </picture>
-                      </div>
-                      <div className="resource-content">
-                        <h6 className="fw-semibold">Adventist Pioneer Library</h6>
-                        <p className="text-muted small mb-2">Historical writings and pioneer literature</p>
-                        <a
-                          href="https://m.egwwritings.org/en/folders/15"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-outline-primary btn-sm"
-                        >
-                          Explore Library
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="resource-item">
-                      <div className="resource-icon">
-                        <picture>
-                          <source type="image/webp" srcSet="/assets/img/webp/EGW.webp" />
-                          <img
-                            src="/assets/EGW.png"
-                            alt="EGW Writings"
-                            className="resource-icon-img"
-                            loading="lazy"
-                          />
-                        </picture>
-                      </div>
-                      <div className="resource-content">
-                        <h6 className="fw-semibold">EGW Writings</h6>
-                        <p className="text-muted small mb-2">Complete collection of Ellen G. White writings</p>
-                        <a
-                          href="https://m.egwwritings.org/en/folders/2"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-outline-primary btn-sm"
-                        >
-                          Read Writings
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="resource-item">
-                      <div className="resource-icon">
-                        <img src="/assets/AA.jpeg" alt="Adventist Archives" className="resource-icon-img" />
-                      </div>
-                      <div className="resource-content">
-                        <h6 className="fw-semibold">Adventist Archives</h6>
-                        <p className="text-muted small mb-2">Historical documents and research materials</p>
-                        <a
-                          href="https://www.adventistarchives.org/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-outline-primary btn-sm"
-                        >
-                          Browse Archives
-                        </a>
-                      </div>
-                    </div>
+                    {(dbResources.length > 0 ? dbResources : STATIC_RESOURCES).map((resource: any) => {
+                      const iconSrc = resource.cloudinarySecureUrl || resource.cloudinary_secure_url || resource.iconPath || resource.icon_path;
+                      const url = resource.linkUrl || resource.link_url || '#';
+                      // Detect PDF: Cloudinary raw URLs contain "/raw/upload/" or end with .pdf
+                      const isPdf = url.includes('/raw/upload/') || url.toLowerCase().endsWith('.pdf');
+                      return (
+                        <div className="resource-item" key={resource.id}>
+                          <div className="resource-icon">
+                            {iconSrc ? (
+                              <img src={iconSrc} alt={resource.title} className="resource-icon-img" loading="lazy" />
+                            ) : (
+                              <div className="resource-icon-placeholder">
+                                <i className={isPdf ? 'fas fa-file-pdf' : 'fas fa-book-open'}></i>
+                              </div>
+                            )}
+                          </div>
+                          <div className="resource-content">
+                            <h6 className="fw-semibold">{resource.title}</h6>
+                            {resource.description && (
+                              <p className="text-muted small mb-2">{resource.description}</p>
+                            )}
+                            <a
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="btn btn-outline-primary btn-sm"
+                            >
+                              {isPdf ? (
+                                <><i className="fas fa-download me-1"></i>Download PDF</>
+                              ) : (
+                                resource.linkLabel || 'Open Resource'
+                              )}
+                            </a>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>

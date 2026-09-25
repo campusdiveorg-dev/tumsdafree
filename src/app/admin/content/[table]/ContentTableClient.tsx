@@ -87,9 +87,14 @@ const SCHEMAS: Record<string, any> = {
     fields: [
       { key: 'title', label: 'Title', type: 'text', required: true },
       { key: 'description', label: 'Description', type: 'textarea' },
-      { key: 'icon_path', label: 'Icon Path', type: 'text' },
-      { key: 'cloudinary_secure_url', label: 'Cloudinary Image', type: 'image' },
-      { key: 'link_url', label: 'URL', type: 'url', required: true },
+      { key: 'cloudinary_secure_url', label: 'Icon / Thumbnail Image', type: 'image' },
+      {
+        key: 'link_url',
+        label: 'Resource Link',
+        type: 'file-or-url',
+        required: true,
+        placeholder: 'Paste external URL, or upload any file below',
+      },
       { key: 'category', label: 'Category', type: 'text' },
       { key: 'sort_order', label: 'Sort Order', type: 'number', default: 0 },
     ],
@@ -225,6 +230,75 @@ function FieldInput({
       </div>
     );
   }
+
+  // File-or-URL field: paste any external URL OR upload any file to Cloudinary
+  if (field.type === 'pdf' || field.type === 'file-or-url') {
+    // A Cloudinary-hosted file has res.cloudinary.com in the URL
+    const isCloudinaryFile = value && String(value).includes('res.cloudinary.com');
+
+    // Guess the file extension for icon display
+    const ext = isCloudinaryFile ? String(value).split('.').pop()?.toLowerCase() ?? '' : '';
+    const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(ext);
+    const isPdf   = ext === 'pdf';
+
+    return (
+      <div className="flex flex-col gap-2">
+        <input
+          type="url"
+          {...base}
+          placeholder={field.placeholder || 'Paste external URL or upload a file below'}
+        />
+        <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>
+          — or upload any file (PDF, Word, image, audio, video… max 50 MB) —
+        </div>
+        <div className="flex items-center gap-2">
+          <input
+            type="file"
+            accept="*"
+            className="form-control form-control-sm"
+            disabled={uploading}
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              setUploading(true);
+              try {
+                const fd = new FormData();
+                fd.append('file', file);
+                const res = await fetch('/api/cloudinary/upload', {
+                  method: 'POST',
+                  body: fd,
+                });
+                const data = await res.json();
+                if (res.ok && data.secure_url) {
+                  onChange({ target: { name: field.key, value: data.secure_url } });
+                } else {
+                  alert(data.error || 'File upload failed');
+                }
+              } catch (err: any) {
+                alert('Upload error: ' + err.message);
+              } finally {
+                setUploading(false);
+              }
+            }}
+          />
+          {uploading && <span className="text-sm text-muted">Uploading to Cloudinary…</span>}
+        </div>
+        {isCloudinaryFile && value && (
+          <div style={{ marginTop: 4, display: 'flex', alignItems: 'center', gap: 8 }}>
+            {isImage ? (
+              <img src={value} alt="Preview" style={{ maxWidth: 100, maxHeight: 70, objectFit: 'cover', borderRadius: 4 }} />
+            ) : (
+              <span style={{ fontSize: 20 }}>
+                {isPdf ? '📄' : '📁'}
+              </span>
+            )}
+            <a href={value} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12 }}>Preview / Download</a>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return <input type={field.type || 'text'} {...base} />;
 }
 
