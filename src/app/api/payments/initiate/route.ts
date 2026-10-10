@@ -37,7 +37,10 @@ export async function POST(req: NextRequest) {
       return jsonError('Missing required fields: phone, amount, purpose.', 422);
     }
 
-    const cleanPhone = String(phone).replace(/\D/g, '');
+    let cleanPhone = String(phone).replace(/\D/g, '');
+    if (cleanPhone.startsWith('0') && cleanPhone.length === 10) {
+      cleanPhone = '254' + cleanPhone.slice(1);
+    }
     const numAmount = Math.round(Number(amount));
 
     const validPurposes = ['tithe', 'offering', 'mission_support', 'other'];
@@ -48,7 +51,7 @@ export async function POST(req: NextRequest) {
       return jsonError('Amount must be at least KES 1.', 422);
     }
     if (!/^254\d{9}$/.test(cleanPhone)) {
-      return jsonError('Phone must be in format 254XXXXXXXXX (12 digits, starts with 254).', 422);
+      return jsonError('Phone must be in format 254XXXXXXXXX (e.g. 07XXXXXXXX or 2547XXXXXXXX).', 422);
     }
 
     const session = await getSession();
@@ -59,7 +62,8 @@ export async function POST(req: NextRequest) {
       return jsonError('Could not connect to M-Pesa. Please try again.', 502);
     }
 
-    const shortcode = process.env.MPESA_SHORTCODE || '174379';
+    const storeNumber = process.env.MPESA_STORE_NUMBER || process.env.MPESA_SHORTCODE || '1328552';
+    const tillNumber = process.env.MPESA_TILL_NUMBER || '';
     const passkey = process.env.MPESA_PASSKEY || '';
     const callbackUrl = process.env.MPESA_CALLBACK_URL || '';
 
@@ -72,17 +76,21 @@ export async function POST(req: NextRequest) {
       String(now.getMinutes()).padStart(2, '0') +
       String(now.getSeconds()).padStart(2, '0');
 
-    const password = Buffer.from(`${shortcode}${passkey}${timestamp}`).toString('base64');
+    const isBuyGoods = Boolean(tillNumber);
+    const businessShortCode = isBuyGoods ? storeNumber : (process.env.MPESA_SHORTCODE || storeNumber);
+    const partyB = isBuyGoods ? tillNumber : businessShortCode;
+    const transactionType = isBuyGoods ? 'CustomerBuyGoodsOnline' : 'CustomerPayBillOnline';
+    const password = Buffer.from(`${businessShortCode}${passkey}${timestamp}`).toString('base64');
     const formattedDesc = purpose.replace('_', ' ').replace(/\b\w/g, (l: string) => l.toUpperCase());
 
     const stkPayload = {
-      BusinessShortCode: shortcode,
+      BusinessShortCode: businessShortCode,
       Password: password,
       Timestamp: timestamp,
-      TransactionType: 'CustomerPayBillOnline',
+      TransactionType: transactionType,
       Amount: numAmount,
       PartyA: cleanPhone,
-      PartyB: shortcode,
+      PartyB: partyB,
       PhoneNumber: cleanPhone,
       CallBackURL: callbackUrl,
       AccountReference: 'TUMSDA',
