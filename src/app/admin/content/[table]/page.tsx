@@ -15,6 +15,8 @@ const VALID_TABLES = [
   'announcements',
   'word_of_the_day',
   'sabbath_gallery',
+  'hero_slides',
+  'tumsda_digest',
 ];
 
 export default function Page({ params }: { params: { table: string } }) {

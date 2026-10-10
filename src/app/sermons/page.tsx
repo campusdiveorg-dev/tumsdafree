@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { db } from '@/lib/db';
-import { resources as resourcesTable } from '@/lib/schema';
-import { asc } from 'drizzle-orm';
+import { resources as resourcesTable, heroSlides as heroSlidesTable } from '@/lib/schema';
+import { asc, eq, and } from 'drizzle-orm';
 
 // Static fallback resources shown when the DB table is empty
 const STATIC_RESOURCES = [
@@ -121,8 +121,15 @@ export const revalidate = 60;
 
 export default async function SermonsPage() {
   let dbResources: any[] = [];
+  let heroBanner: string | null = null;
   try {
     dbResources = await db.select().from(resourcesTable).orderBy(asc(resourcesTable.sortOrder));
+    const bannerRows = await db
+      .select()
+      .from(heroSlidesTable)
+      .where(and(eq(heroSlidesTable.page, 'sermons'), eq(heroSlidesTable.isActive, 1)))
+      .limit(1);
+    heroBanner = bannerRows[0]?.imageUrl || null;
   } catch (err) {
     console.error('[SermonsPage DB error]', err);
   }
@@ -133,7 +140,10 @@ export default async function SermonsPage() {
       <main>
         {/* Hero Section */}
         <section className="sermons-hero">
-          <div className="sermons-hero-container">
+          <div
+            className="sermons-hero-container"
+            style={heroBanner ? { backgroundImage: `url(${heroBanner})` } : undefined}
+          >
             <div className="sermons-hero-overlay">
               <div className="sermons-hero-content">
                 <h1 className="sermons-hero-title">Sermons &amp; Resources</h1>

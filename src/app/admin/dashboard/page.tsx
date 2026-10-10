@@ -14,9 +14,19 @@ import {
   Clock,
   Compass,
   FileText,
+  Sliders,
+  Newspaper,
+  Images,
+  Bell,
+  Quote,
 } from 'lucide-react';
 
 const CONTENT_TABLES = [
+  { key: 'hero_slides', label: 'Slideshow & Banners', icon: <Sliders size={24} /> },
+  { key: 'tumsda_digest', label: 'TUMSDA Digest', icon: <Newspaper size={24} /> },
+  { key: 'sabbath_gallery', label: 'Sabbath Gallery', icon: <Images size={24} /> },
+  { key: 'announcements', label: 'Announcements', icon: <Bell size={24} /> },
+  { key: 'word_of_the_day', label: 'Word of the Day', icon: <Quote size={24} /> },
   { key: 'departments', label: 'Departments', icon: <Building2 size={24} /> },
   { key: 'ministries', label: 'Ministries', icon: <BookOpen size={24} /> },
   { key: 'leadership', label: 'Leadership', icon: <Crown size={24} /> },

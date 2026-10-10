@@ -276,3 +276,42 @@ export const sabbathGallery = mysqlTable('sabbath_gallery', {
     .notNull(),
 });
 
+// ── HERO SLIDES & PAGE BANNERS ────────────────────────────────────────
+export const heroSlides = mysqlTable('hero_slides', {
+  id: int('id', { unsigned: true }).primaryKey().autoincrement(),
+  title: varchar('title', { length: 200 }).notNull(),
+  subtitle: text('subtitle'),
+  imageUrl: varchar('image_url', { length: 1000 }).notNull(),
+  buttonText: varchar('button_text', { length: 100 }),
+  buttonLink: varchar('button_link', { length: 500 }),
+  page: varchar('page', { length: 100 }).default('home').notNull(),
+  sortOrder: int('sort_order').default(0).notNull(),
+  isActive: tinyint('is_active').default(1).notNull(),
+  createdAt: datetime('created_at', { mode: 'string' })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: datetime('updated_at', { mode: 'string' })
+    .default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`)
+    .notNull(),
+});
+
+// ── TUMSDA DIGEST / MONTHLY PUBLICATIONS ──────────────────────────────
+export const tumsdaDigest = mysqlTable('tumsda_digest', {
+  id: int('id', { unsigned: true }).primaryKey().autoincrement(),
+  title: varchar('title', { length: 200 }).default('TUMSDA Digest').notNull(),
+  edition: varchar('edition', { length: 150 }),
+  description: text('description'),
+  coverImageUrl: varchar('cover_image_url', { length: 1000 }),
+  fileUrl: varchar('file_url', { length: 1000 }).notNull(),
+  fileName: varchar('file_name', { length: 255 }),
+  isActive: tinyint('is_active').default(1).notNull(),
+  sortOrder: int('sort_order').default(0).notNull(),
+  createdAt: datetime('created_at', { mode: 'string' })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: datetime('updated_at', { mode: 'string' })
+    .default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`)
+    .notNull(),
+});
+
+

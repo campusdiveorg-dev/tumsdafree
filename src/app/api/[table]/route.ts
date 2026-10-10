@@ -17,6 +17,8 @@ const ALLOWED_TABLES: Record<string, string[]> = {
   announcements: ['title', 'content', 'sort_order'],
   word_of_the_day: ['content', 'reference'],
   sabbath_gallery: ['title', 'image_url', 'link_url', 'icon', 'date_taken', 'sort_order'],
+  hero_slides: ['title', 'subtitle', 'image_url', 'button_text', 'button_link', 'page', 'sort_order', 'is_active'],
+  tumsda_digest: ['title', 'edition', 'description', 'cover_image_url', 'file_url', 'file_name', 'is_active', 'sort_order'],
 };
 
 function getTableConfig(table: string) {
@@ -36,6 +38,8 @@ function getTableConfig(table: string) {
   else if (table === 'weekly_meetings') orderBy = 'sort_order, id';
   else if (table === 'word_of_the_day') orderBy = 'id DESC';
   else if (table === 'sabbath_gallery') orderBy = 'sort_order ASC, date_taken DESC, id DESC';
+  else if (table === 'hero_slides') orderBy = 'page ASC, sort_order ASC, id ASC';
+  else if (table === 'tumsda_digest') orderBy = 'sort_order ASC, id DESC';
 
   return { realTable, whereClause, orderBy, fields: ALLOWED_TABLES[table] };
 }

@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { db } from '@/lib/db';
-import { missions } from '@/lib/schema';
-import { asc } from 'drizzle-orm';
+import { missions, heroSlides as heroSlidesTable } from '@/lib/schema';
+import { asc, eq, and } from 'drizzle-orm';
 import MissionAccordion from '@/components/MissionAccordion';
 
 export const metadata: Metadata = {
@@ -37,8 +37,15 @@ export const revalidate = 60;
 
 export default async function EvangelismPage() {
   let missionList: any[] = [];
+  let heroBanner: string | null = null;
   try {
     missionList = await db.select().from(missions).orderBy(asc(missions.sortOrder));
+    const bannerRows = await db
+      .select()
+      .from(heroSlidesTable)
+      .where(and(eq(heroSlidesTable.page, 'evangelism'), eq(heroSlidesTable.isActive, 1)))
+      .limit(1);
+    heroBanner = bannerRows[0]?.imageUrl || null;
   } catch (err) {
     console.error('[EvangelismPage DB error]', err);
   }
@@ -49,7 +56,10 @@ export default async function EvangelismPage() {
       <main>
         {/* Hero Section */}
         <section className="evangelism-hero section py-0">
-          <div className="evangelism-hero-container">
+          <div
+            className="evangelism-hero-container"
+            style={heroBanner ? { backgroundImage: `url(${heroBanner})` } : undefined}
+          >
             <div className="evangelism-hero-overlay">
               <div className="evangelism-hero-content">
                 <h1 className="evangelism-hero-title">Evangelism &amp; Missions</h1>

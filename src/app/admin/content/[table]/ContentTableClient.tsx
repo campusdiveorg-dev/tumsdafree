@@ -144,20 +144,66 @@ const SCHEMAS: Record<string, any> = {
     preview: (r: any) => `${r.reference} — ${(r.content || '').slice(0, 60)}…`,
   },
   sabbath_gallery: {
-    label: 'Sabbath Gallery',
+    label: 'Sabbath Gallery Collections',
     fields: [
+      { key: 'title', label: 'Collection Title (e.g. Finalist Sabbath 2025)', type: 'text', required: true },
+      {
+        key: 'link_url',
+        label: 'Photos Platform Link (Google Drive, Google Photos, Flickr link)',
+        type: 'url',
+        placeholder: 'https://drive.google.com/…',
+      },
       {
         key: 'image_url',
-        label: 'Image URL (paste Google / web link)',
-        type: 'url',
-        required: true,
-        placeholder: 'https://…',
+        label: 'Cover Image (Upload file or paste image URL)',
+        type: 'image',
+        placeholder: 'Upload cover photo or paste image URL',
       },
-      { key: 'title', label: 'Caption (optional)', type: 'text' },
+      {
+        key: 'icon',
+        label: 'Collection Icon',
+        type: 'select',
+        options: ['crown', 'users', 'user', 'graduation-cap', 'gem', 'image'],
+        default: 'users',
+      },
       { key: 'date_taken', label: 'Date Taken', type: 'date' },
       { key: 'sort_order', label: 'Sort Order (lower = first)', type: 'number', default: 0 },
     ],
-    preview: (r: any) => r.title || r.image_url?.slice(0, 60) + '…',
+    preview: (r: any) => `${r.title} (${r.link_url || 'No Link'})`,
+  },
+  hero_slides: {
+    label: 'Hero Slideshow & Page Banners',
+    fields: [
+      { key: 'title', label: 'Slide Title / Heading', type: 'text', required: true, placeholder: 'e.g. WELCOME TO TUMSDA' },
+      { key: 'subtitle', label: 'Subtitle / Description', type: 'textarea', placeholder: 'e.g. The Church We Love The Most!' },
+      { key: 'image_url', label: 'Slide Image (Upload photo or paste URL)', type: 'image', required: true },
+      { key: 'button_text', label: 'Button Label (Optional)', type: 'text', placeholder: 'e.g. Welcome and Worship With Us' },
+      { key: 'button_link', label: 'Button Link URL', type: 'text', placeholder: 'e.g. #, /about, or https://youtube.com/...' },
+      {
+        key: 'page',
+        label: 'Target Page / Location',
+        type: 'select',
+        options: ['home', 'sermons', 'evangelism', 'about', 'departments', 'leadership'],
+        default: 'home',
+      },
+      { key: 'sort_order', label: 'Slide Order (1 = first)', type: 'number', default: 1 },
+      { key: 'is_active', label: 'Visibility Status', type: 'boolean', default: 1 },
+    ],
+    preview: (r: any) => `[${(r.page || 'home').toUpperCase()}] ${r.title} ${r.is_active ? '✓' : '(Hidden)'}`,
+  },
+  tumsda_digest: {
+    label: 'TUMSDA Digest (Monthly Publication)',
+    fields: [
+      { key: 'title', label: 'Publication Name', type: 'text', required: true, default: 'TUMSDA Digest', placeholder: 'e.g. TUMSDA Digest' },
+      { key: 'edition', label: 'Edition / Month', type: 'text', placeholder: 'e.g. October 2026 Edition (Volume 1, Issue 4)' },
+      { key: 'description', label: 'Summary / Excerpt', type: 'textarea', placeholder: 'Short overview of this month\'s articles and spiritual theme...' },
+      { key: 'cover_image_url', label: 'Cover / Thumbnail Image (Optional)', type: 'image' },
+      { key: 'file_url', label: 'Digest Document File (Upload PDF, Word, or Image)', type: 'file', required: true },
+      { key: 'file_name', label: 'File Display Name', type: 'text', placeholder: 'e.g. TUMSDA_Digest_Oct_2026.pdf' },
+      { key: 'sort_order', label: 'Sort Order', type: 'number', default: 0 },
+      { key: 'is_active', label: 'Publish Status (Active = Show on Home, Inactive = Hide)', type: 'boolean', default: 1 },
+    ],
+    preview: (r: any) => `${r.title} — ${r.edition || 'Latest Issue'} ${r.is_active ? '(Active on Home)' : '(Hidden)'}`,
   },
 };
 
@@ -190,6 +236,68 @@ function FieldInput({
         ))}
       </select>
     );
+
+  if (field.type === 'boolean') {
+    const isChecked = value === 1 || value === '1' || value === true;
+    return (
+      <select
+        {...base}
+        value={isChecked ? '1' : '0'}
+        onChange={(e) => onChange({ target: { name: field.key, value: e.target.value === '1' ? 1 : 0 } })}
+      >
+        <option value="1">Active / Visible (Published)</option>
+        <option value="0">Draft / Inactive (Hidden)</option>
+      </select>
+    );
+  }
+
+  if (field.type === 'file') {
+    return (
+      <div className="flex flex-col gap-2">
+        <input type="text" {...base} placeholder="Cloudinary file URL or paste link" />
+        <div className="flex items-center gap-2 mt-1">
+          <input
+            type="file"
+            accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,application/pdf,image/*"
+            className="form-control form-control-sm"
+            disabled={uploading}
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              setUploading(true);
+              try {
+                const fd = new FormData();
+                fd.append('file', file);
+                fd.append('table', 'digest');
+                const res = await fetch('/api/cloudinary/upload', {
+                  method: 'POST',
+                  body: fd,
+                });
+                const data = await res.json();
+                if (res.ok && data.secure_url) {
+                  onChange({
+                    target: { name: field.key, value: data.secure_url },
+                  });
+                } else {
+                  alert(data.error || 'Upload failed');
+                }
+              } catch (err: any) {
+                alert('File upload error: ' + err.message);
+              } finally {
+                setUploading(false);
+              }
+            }}
+          />
+          {uploading && <span className="text-sm text-muted">Uploading file…</span>}
+        </div>
+        {value && (
+          <div className="small text-muted mt-1">
+            Uploaded: <a href={value} target="_blank" rel="noopener noreferrer" className="text-primary text-decoration-underline fw-semibold">Open / Preview File</a>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   if (field.type === 'image') {
     return (

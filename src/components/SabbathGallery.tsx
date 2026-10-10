@@ -107,20 +107,45 @@ function getIconComponent(iconName?: string | null) {
   }
 }
 
+function resolveImageUrl(url?: string | null): string | null {
+  if (!url) return null;
+  const trimmed = url.trim();
+  if (!trimmed) return null;
+
+  // Google Drive file link: drive.google.com/file/d/FILE_ID/...
+  const driveFileMatch = trimmed.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (driveFileMatch && driveFileMatch[1]) {
+    return `https://lh3.googleusercontent.com/d/${driveFileMatch[1]}`;
+  }
+  // Google Drive open/uc link: drive.google.com/open?id=FILE_ID
+  const driveIdMatch = trimmed.match(/drive\.google\.com\/(?:uc\?id=|open\?id=)([a-zA-Z0-9_-]+)/);
+  if (driveIdMatch && driveIdMatch[1]) {
+    return `https://lh3.googleusercontent.com/d/${driveIdMatch[1]}`;
+  }
+
+  return trimmed;
+}
+
 export default function SabbathGallery({ photos = [], previewMode = false }: Props) {
   const [showModal, setShowModal] = useState(false);
 
   // Merge DB photos with seed collections if DB entries lack links/titles
-  const collections: GalleryCollection[] =
+  const collections: (GalleryCollection & { fallbackImage: string })[] =
     photos.length > 0
-      ? photos.map((p, idx) => ({
-          id: p.id || `photo-${idx}`,
-          title: p.title || DEFAULT_COLLECTIONS[idx % DEFAULT_COLLECTIONS.length].title,
-          image_url: p.image_url || p.imageUrl || DEFAULT_COLLECTIONS[idx % DEFAULT_COLLECTIONS.length].image_url,
-          link_url: p.link_url || p.linkUrl || DEFAULT_COLLECTIONS[idx % DEFAULT_COLLECTIONS.length].link_url || 'https://drive.google.com/',
-          icon: p.icon || DEFAULT_COLLECTIONS[idx % DEFAULT_COLLECTIONS.length].icon,
-        }))
-      : DEFAULT_COLLECTIONS;
+      ? photos.map((p, idx) => {
+          const defaultItem = DEFAULT_COLLECTIONS[idx % DEFAULT_COLLECTIONS.length];
+          const fallback = defaultItem.image_url || '/assets/img/Sabbath.png';
+          const resolved = resolveImageUrl(p.image_url || p.imageUrl);
+          return {
+            id: p.id || `photo-${idx}`,
+            title: p.title || defaultItem.title,
+            image_url: resolved || fallback,
+            link_url: p.link_url || p.linkUrl || defaultItem.link_url || 'https://drive.google.com/',
+            icon: p.icon || defaultItem.icon,
+            fallbackImage: fallback,
+          };
+        })
+      : DEFAULT_COLLECTIONS.map((c) => ({ ...c, fallbackImage: c.image_url || '/assets/img/Sabbath.png' }));
 
   const handleCollectionClick = (url?: string | null) => {
     const targetUrl = url || 'https://drive.google.com/';
@@ -154,7 +179,7 @@ export default function SabbathGallery({ photos = [], previewMode = false }: Pro
           {/* 4 Box Grid Layout with Image Top & White Footer Below */}
           <div className="row g-3">
             {displayCollections.map((item) => {
-              const img = item.image_url || item.imageUrl || '/assets/img/Sabbath.png';
+              const img = item.image_url || item.fallbackImage;
               return (
                 <div key={item.id} className="col-6 col-md-3">
                   <div
@@ -171,7 +196,10 @@ export default function SabbathGallery({ photos = [], previewMode = false }: Pro
                         className="sabbath-card-img w-100 h-100 object-fit-cover"
                         loading="lazy"
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src = '/assets/img/Sabbath.png';
+                          const target = e.target as HTMLImageElement;
+                          if (target.src !== item.fallbackImage) {
+                            target.src = item.fallbackImage;
+                          }
                         }}
                       />
                     </div>
