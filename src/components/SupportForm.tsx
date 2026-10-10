@@ -4,6 +4,7 @@ import { useState, FormEvent } from 'react';
 
 export default function SupportForm() {
   const [phone, setPhone] = useState('');
+  const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
   const [purpose, setPurpose] = useState('mission_support');
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'danger' } | null>(null);
@@ -38,6 +39,9 @@ export default function SupportForm() {
             type: 'danger',
           });
           setLoading(false);
+          setPhone('');
+          setAmount('');
+          setName('');
         } else if (payload?.ResultCode && payload?.ResultCode !== '4999' && payload?.ResultCode !== '0') {
           clearInterval(interval);
           setMessage({
@@ -70,7 +74,7 @@ export default function SupportForm() {
       const res = await fetch('/api/payments/initiate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, amount: Number(amount), purpose }),
+        body: JSON.stringify({ phone, amount: Number(amount), purpose, name: name.trim() || undefined }),
       });
 
       const data = await res.json();
@@ -106,6 +110,20 @@ export default function SupportForm() {
           placeholder="07xxxxxxxx or 2547xxxxxxxx"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
+        />
+      </div>
+      <div className="mb-3">
+        <label className="form-label">
+          Full Name{' '}
+          <span className="text-muted" style={{ fontSize: '0.85em' }}>(optional — helps identify your giving record)</span>
+        </label>
+        <input
+          type="text"
+          name="name"
+          className="form-control"
+          placeholder="e.g. John Doe"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
       </div>
       <div className="mb-3">

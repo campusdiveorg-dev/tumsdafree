@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       .where(eq(payments.checkoutRequestId, checkoutRequestId))
       .limit(1);
 
-    if (existing[0] && existing[0].status === 'completed') {
+    if (existing[0] && existing[0].status === 'completed' && existing[0].receipt) {
       return jsonOk({
         status: 'completed',
         ResultCode: '0',
@@ -92,12 +92,25 @@ export async function POST(req: NextRequest) {
 
     const queryData = await queryRes.json().catch(() => ({}));
 
-    // If Safaricom confirmed completed
+    // If Safaricom confirmed completed — also extract receipt number if present
     if (queryData.ResultCode === '0' && existing[0]) {
+      // STK query response may include receipt in CallbackMetadata items or directly
+      let receiptNumber: string | null = queryData.MpesaReceiptNumber || null;
+      if (!receiptNumber && queryData.CallbackMetadata?.Item) {
+        for (const item of queryData.CallbackMetadata.Item) {
+          if (item.Name === 'MpesaReceiptNumber' && item.Value) {
+            receiptNumber = String(item.Value);
+            break;
+          }
+        }
+      }
+
       await db
         .update(payments)
         .set({
           status: 'completed',
+          ...(receiptNumber ? { mpesaReceiptNumber: receiptNumber } : {}),
+          rawCallbackPayload: queryData,
           updatedAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
         })
         .where(eq(payments.id, existing[0].id));
