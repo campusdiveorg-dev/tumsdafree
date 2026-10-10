@@ -110,6 +110,12 @@ const SCHEMAS: Record<string, any> = {
       { key: 'chair_title', label: 'Mission Chair Title', type: 'text', default: 'Mission Chair' },
       { key: 'chair_message', label: 'Mission Chair Message', type: 'textarea' },
       { key: 'chair_cloudinary_secure_url', label: 'Mission Chair Photo', type: 'image' },
+      {
+        key: 'whatsapp_link',
+        label: 'WhatsApp Link (Join Us button)',
+        type: 'url',
+        placeholder: 'https://whatsapp.com/channel/... or https://chat.whatsapp.com/...',
+      },
       { key: 'is_upcoming', label: 'Upcoming (1/0)', type: 'number', default: 0 },
       { key: 'sort_order', label: 'Sort Order', type: 'number', default: 0 },
     ],

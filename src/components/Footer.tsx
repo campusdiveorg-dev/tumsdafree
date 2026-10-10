@@ -107,12 +107,6 @@ export default function Footer() {
 
               <SupportForm />
 
-              <div className="mt-4 text-muted small">
-                <p>
-                  Or use Till Number: <strong>3482464</strong> (Name: RHODA MUTANU)
-                </p>
-              </div>
-
               <p className="mt-3 text-primary fw-semibold">
                 Thank You! May God Bless You Abundantly!
               </p>

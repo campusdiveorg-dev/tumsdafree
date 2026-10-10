@@ -165,7 +165,15 @@ export default function DashboardPage() {
                     <tbody>
                       {recentPayments.map((p) => (
                         <tr key={p.id}>
-                          <td>{p.donor_name || <span className="text-muted">Anonymous</span>}</td>
+                          <td>
+                            {p.donor_name || p.payer_name ? (
+                              <span style={{ fontWeight: 600 }}>{p.donor_name || p.payer_name}</span>
+                            ) : (
+                              <span className="text-muted text-sm" style={{ fontStyle: 'italic' }}>
+                                Direct M-Pesa
+                              </span>
+                            )}
+                          </td>
                           <td>{p.phone_number}</td>
                           <td>KES {parseFloat(p.amount).toLocaleString()}</td>
                           <td style={{ textTransform: 'capitalize' }}>{p.purpose.replace('_', ' ')}</td>
