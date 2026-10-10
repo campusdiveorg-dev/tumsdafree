@@ -31,7 +31,8 @@ async function getMpesaAccessToken(): Promise<string | null> {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
-    let { phone, amount, purpose } = body;
+    let { phone, amount, purpose, name, payerName } = body;
+    const resolvedName = (name || payerName || null)?.trim() || null;
 
     if (!phone || !amount || !purpose) {
       return jsonError('Missing required fields: phone, amount, purpose.', 422);
@@ -118,6 +119,7 @@ export async function POST(req: NextRequest) {
 
     await db.insert(payments).values({
       userId,
+      payerName: resolvedName,
       phoneNumber: cleanPhone,
       amount: String(numAmount),
       purpose,

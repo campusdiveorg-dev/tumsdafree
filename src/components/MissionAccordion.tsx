@@ -20,6 +20,8 @@ interface MissionItem {
   description?: string | null;
   isUpcoming?: number | null;
   is_upcoming?: number | null;
+  whatsappLink?: string | null;
+  whatsapp_link?: string | null;
   cloudinarySecureUrl?: string | null;
   cloudinary_secure_url?: string | null;
   chairName?: string | null;
@@ -63,6 +65,9 @@ export default function MissionAccordion({ missions }: { missions: MissionItem[]
         const themeVerse = g(mission, 'themeVerse', 'theme_verse') as string | null;
         const themeSong  = g(mission, 'themeSong',  'theme_song')  as string | null;
         const isUpcoming = Number(g(mission, 'isUpcoming', 'is_upcoming') ?? 0);
+        const whatsappUrl =
+          (g(mission, 'whatsappLink', 'whatsapp_link') as string | null) ||
+          'https://whatsapp.com/channel/0029Vb5zZEjBKfi4xoxGlI25';
 
         const chairName = g(mission, 'chairName', 'chair_name') as string | null;
         const chairTitle = g(mission, 'chairTitle', 'chair_title') as string | null;
@@ -165,7 +170,7 @@ export default function MissionAccordion({ missions }: { missions: MissionItem[]
                       </p>
                       <div className="mission-cta-buttons">
                         <a
-                          href="https://whatsapp.com/channel/0029Vb5zZEjBKfi4xoxGlI25"
+                          href={whatsappUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="btn-mission primary"

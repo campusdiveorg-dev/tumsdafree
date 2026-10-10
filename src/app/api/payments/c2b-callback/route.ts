@@ -24,7 +24,9 @@ export async function POST(req: NextRequest) {
     const transAmount = body.TransAmount || body.transAmount || '0';
     const msisdn = body.MSISDN || body.msisdn || '';
     const firstName = body.FirstName || body.firstName || '';
+    const middleName = body.MiddleName || body.middleName || '';
     const lastName = body.LastName || body.lastName || '';
+    const fullName = [firstName, middleName, lastName].filter(Boolean).join(' ').trim() || null;
     const rawPurpose = (body.BillRefNumber || body.billRefNumber || 'offering').toLowerCase().trim();
 
     let purpose: PurposeType = 'offering';
@@ -43,6 +45,7 @@ export async function POST(req: NextRequest) {
 
       if (existing.length === 0) {
         await db.insert(payments).values({
+          payerName: fullName,
           phoneNumber: msisdn ? String(msisdn) : '000000000000',
           amount: String(transAmount),
           purpose,

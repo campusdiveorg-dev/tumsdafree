@@ -3,6 +3,7 @@
 import { useState, FormEvent } from 'react';
 
 export default function SupportForm() {
+  const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [amount, setAmount] = useState('');
   const [purpose, setPurpose] = useState('mission_support');
@@ -70,7 +71,7 @@ export default function SupportForm() {
       const res = await fetch('/api/payments/initiate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, amount: Number(amount), purpose }),
+        body: JSON.stringify({ name, phone, amount: Number(amount), purpose }),
       });
 
       const data = await res.json();
@@ -97,13 +98,24 @@ export default function SupportForm() {
   return (
     <form id="mpesaForm" className="mt-3" onSubmit={handleSubmit}>
       <div className="mb-3">
-        <label className="form-label">Phone Number (e.g. 254712345678)</label>
+        <label className="form-label">Your Name (Optional)</label>
+        <input
+          type="text"
+          name="name"
+          className="form-control"
+          placeholder="e.g. John Doe"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+      <div className="mb-3">
+        <label className="form-label">Phone Number (e.g. 0712345678 or 254712345678)</label>
         <input
           type="tel"
           name="phone"
           className="form-control"
           required
-          placeholder="2547xxxxxxxx"
+          placeholder="07xxxxxxxx or 2547xxxxxxxx"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />

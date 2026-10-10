@@ -69,4 +69,5 @@ export const paymentsApi = {
   delete: (id: number | string) => api.delete(`/payments?id=${id}`),
   clearAll: () => api.delete('/payments?clearAll=true'),
   registerC2B: () => api.post('/payments/register-c2b'),
+  query: (checkoutRequestId: string) => api.post('/payments/query', { checkoutRequestId }),
 };

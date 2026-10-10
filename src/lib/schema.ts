@@ -159,6 +159,7 @@ export const missions = mysqlTable('missions', {
   endDate: date('end_date', { mode: 'string' }),
   description: text('description'),
   isUpcoming: tinyint('is_upcoming').default(0).notNull(),
+  whatsappLink: varchar('whatsapp_link', { length: 500 }),
   sortOrder: int('sort_order').default(0).notNull(),
   cloudinaryPublicId: varchar('cloudinary_public_id', { length: 255 }),
   cloudinarySecureUrl: varchar('cloudinary_secure_url', { length: 500 }),
@@ -181,6 +182,7 @@ export const payments = mysqlTable(
   {
     id: bigint('id', { mode: 'number', unsigned: true }).primaryKey().autoincrement(),
     userId: bigint('user_id', { mode: 'number', unsigned: true }),
+    payerName: varchar('payer_name', { length: 150 }),
     phoneNumber: varchar('phone_number', { length: 20 }).notNull(),
     amount: decimal('amount', { precision: 10, scale: 2 }).notNull(),
     purpose: mysqlEnum('purpose', ['tithe', 'offering', 'mission_support', 'other']).notNull(),

@@ -15,10 +15,13 @@ export async function GET(req: NextRequest) {
       .select({
         id: payments.id,
         phone_number: payments.phoneNumber,
+        payer_name: payments.payerName,
         amount: payments.amount,
         purpose: payments.purpose,
         status: payments.status,
         mpesa_receipt_number: payments.mpesaReceiptNumber,
+        checkout_request_id: payments.checkoutRequestId,
+        raw_callback_payload: payments.rawCallbackPayload,
         created_at: payments.createdAt,
         donor_name: users.name,
         donor_email: users.email,
@@ -28,7 +31,25 @@ export async function GET(req: NextRequest) {
       .orderBy(desc(payments.createdAt))
       .limit(500);
 
-    return jsonOk(rows);
+    const mapped = rows.map((r) => {
+      let resolvedName = r.donor_name || r.payer_name;
+      if (!resolvedName && r.raw_callback_payload) {
+        try {
+          const raw: any = typeof r.raw_callback_payload === 'string' ? JSON.parse(r.raw_callback_payload) : r.raw_callback_payload;
+          const fn = raw.FirstName || raw.firstName || '';
+          const mn = raw.MiddleName || raw.middleName || '';
+          const ln = raw.LastName || raw.lastName || '';
+          const combined = [fn, mn, ln].filter(Boolean).join(' ').trim();
+          if (combined) resolvedName = combined;
+        } catch {}
+      }
+      return {
+        ...r,
+        donor_name: resolvedName || null,
+      };
+    });
+
+    return jsonOk(mapped);
   } catch (err: any) {
     if (err.message === 'UNAUTHORIZED') return jsonError('Unauthorized — please log in.', 401);
     if (err.message === 'FORBIDDEN') return jsonError('Forbidden — admin access required.', 403);
