@@ -408,9 +408,6 @@ export default async function HomePage() {
                         Upcoming Events
                       </h4>
                     </div>
-                    <Link href="/about#calendar" className="btn btn-outline-primary btn-sm rounded-pill px-3">
-                      Full Calendar
-                    </Link>
                   </div>
                   <p className="text-muted small mb-3">
                     Stay connected with our campus church activities, Sabbath celebrations, and special evangelism programmes.
@@ -435,9 +432,6 @@ export default async function HomePage() {
                         Weekly Meetings
                       </h4>
                     </div>
-                    <Link href="/about#weekly-meetings" className="btn btn-outline-primary btn-sm rounded-pill px-3">
-                      View Schedules
-                    </Link>
                   </div>
                   <p className="text-muted small mb-3">
                     Join us throughout the week for midweek prayer, vespers fellowship, and choir practice.
